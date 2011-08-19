@@ -14,7 +14,6 @@ import org.ddialliance.ddi3.xml.xmlbeans.reusable.ProgrammingLanguageCodeType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.StructuredStringType;
 import org.ddialliance.ddieditor.ui.model.Model;
 import org.ddialliance.ddieditor.ui.model.ModelIdentifingType;
-import org.ddialliance.ddieditor.ui.util.LanguageUtil;
 import org.ddialliance.ddieditor.util.DdiEditorConfig;
 import org.ddialliance.ddiftp.util.DDIFtpException;
 import org.ddialliance.ddiftp.util.Translator;
@@ -88,7 +87,7 @@ public class StatementItem extends Model {
 					Translator.getLocaleLanguage(), false, true);
 		} else {
 			dynamicText = (DynamicTextType) XmlBeansUtil.getLangElement(
-					LanguageUtil.getDisplayLanguage(), doc.getStatementItem()
+					getDisplayLanguage(), doc.getStatementItem()
 							.getDisplayTextList());
 		}
 		return dynamicText;

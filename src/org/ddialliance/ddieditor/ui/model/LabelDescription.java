@@ -6,7 +6,6 @@ import org.apache.xmlbeans.XmlObject;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.LabelDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.LabelType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.StructuredStringType;
-import org.ddialliance.ddieditor.ui.util.LanguageUtil;
 import org.ddialliance.ddiftp.util.DDIFtpException;
 import org.ddialliance.ddiftp.util.log.Log;
 import org.ddialliance.ddiftp.util.log.LogFactory;
@@ -53,7 +52,7 @@ public abstract class LabelDescription extends Model implements IModel, ILabelDe
 	public String getDisplayLabel() throws DDIFtpException {
 
 		if (labels.size() > 0) {
-			String displayLang = LanguageUtil.getDisplayLanguage();
+			String displayLang = getDisplayLanguage();
 			try {
 				return XmlBeansUtil
 						.getTextOnMixedElement((XmlObject) XmlBeansUtil
@@ -76,8 +75,7 @@ public abstract class LabelDescription extends Model implements IModel, ILabelDe
 		// Show label in Display language
 		if (labels.size() > 0) {
 			try {
-				label = (XmlObject) XmlBeansUtil.getLangElement(LanguageUtil
-						.getDisplayLanguage(), labels);
+				label = (XmlObject) XmlBeansUtil.getLangElement(getDisplayLanguage(), labels);
 			} catch (DDIFtpException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -111,7 +109,12 @@ public abstract class LabelDescription extends Model implements IModel, ILabelDe
 		labelType = LabelDocument.Factory.newInstance().addNewLabel();
 		labelType.setTranslated(false);
 		labelType.setTranslatable(true);
-		labelType.setLang(LanguageUtil.getOriginalLanguage());
+		try {
+			labelType.setLang(getOriginalLanguage());
+		} catch (DDIFtpException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		XmlBeansUtil.setTextOnMixedElement(labelType, string);
 		return labelType;
 	}
@@ -139,8 +142,7 @@ public abstract class LabelDescription extends Model implements IModel, ILabelDe
 		// Show Description in Display language
 		if (descrs.size() > 0) {
 			try {
-				descr = (XmlObject) XmlBeansUtil.getLangElement(LanguageUtil
-						.getDisplayLanguage(), descrs);
+				descr = (XmlObject) XmlBeansUtil.getLangElement(getDisplayLanguage(), descrs);
 			} catch (DDIFtpException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -175,7 +177,13 @@ public abstract class LabelDescription extends Model implements IModel, ILabelDe
 		descriptionType = LabelDocument.Factory.newInstance().addNewLabel();
 		descriptionType.setTranslated(false);
 		descriptionType.setTranslatable(true);
-		descriptionType.setLang(LanguageUtil.getOriginalLanguage());
+		try {
+			descriptionType.setLang(getOriginalLanguage());
+		} catch (DDIFtpException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 		XmlBeansUtil.setTextOnMixedElement(descriptionType, string);
 		return descriptionType;
 	}

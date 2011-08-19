@@ -6,7 +6,6 @@ import org.ddialliance.ddi3.xml.xmlbeans.datacollection.SpecificSequenceType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.InternationalStringType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.ReferenceType;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
-import org.ddialliance.ddieditor.ui.editor.Editor;
 import org.ddialliance.ddieditor.ui.model.Model;
 import org.ddialliance.ddieditor.ui.model.ModelAccessor;
 import org.ddialliance.ddiftp.util.DDIFtpException;
@@ -134,7 +133,7 @@ public class QuestionConstruct extends Model {
 			getResponseUnit().setStringValue(result);
 		}
 
-		// SpecificSequenceType
+		// Response Sequence
 		if (type.equals(SpecificSequenceType.class)) {
 			log.warn("AlternateSequenceType, not implemented");
 

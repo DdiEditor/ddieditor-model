@@ -6,18 +6,25 @@ import org.ddialliance.ddi3.xml.xmlbeans.reusable.InternationalStringType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.VersionRationaleDocument;
 import org.ddialliance.ddieditor.logic.identification.IdentificationManager;
 import org.ddialliance.ddieditor.logic.identification.VersionInformation;
+import org.ddialliance.ddiftp.util.DDIFtpException;
+import org.ddialliance.ddiftp.util.log.Log;
+import org.ddialliance.ddiftp.util.log.LogFactory;
+import org.ddialliance.ddiftp.util.log.LogType;
 import org.ddialliance.ddiftp.util.xml.XmlBeansUtil;
 
 /**
  * Model - provides accssors for: id, version and agency
  */
 public abstract class Model implements IModel {
+	private static Log log = LogFactory.getLog(LogType.SYSTEM, Model.class);
 	private String id;
 	private String version;
 	private String parentId;
 	private String parentVersion;
 	private String agency;
 	protected boolean create = false;
+	private String originalLanguage = "";
+	private String displayLanguage = "";
 
 	/**
 	 * Constructor
@@ -141,4 +148,44 @@ public abstract class Model implements IModel {
 	public void setCreate(boolean create) {
 		this.create = create;
 	}
+	
+	/**
+	 * Set Original Language
+	 * 
+	 */
+	public void setOriginalLanguage(String language) {
+		this.originalLanguage = language;
+	}
+
+	/**
+	 * Get Original Language
+	 * 
+	 * @return
+	 */
+	public String getOriginalLanguage() throws DDIFtpException {
+		if (originalLanguage.length() != 0) {
+			return this.originalLanguage;
+		}
+		throw new DDIFtpException("Original Language not defined for "+this.getClass());
+	}
+	/**
+	 * Set Display Language
+	 * 
+	 */
+	public void setDisplayLanguage(String language) {
+		this.displayLanguage = language;
+	}
+
+	/**
+	 * Get Display Language
+	 * 
+	 * @return
+	 */
+	public String getDisplayLanguage() throws DDIFtpException {
+		if (displayLanguage.length() != 0) {
+			return this.displayLanguage;
+		}
+		throw new DDIFtpException("Display Language not defined for "+this.getClass());
+	}
+
 }

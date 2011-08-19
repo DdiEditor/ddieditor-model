@@ -4,7 +4,6 @@ import org.ddialliance.ddi3.xml.xmlbeans.datacollection.InstrumentDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.datacollection.InstrumentType;
 import org.ddialliance.ddieditor.ui.model.IModel;
 import org.ddialliance.ddieditor.ui.model.LabelDescription;
-import org.ddialliance.ddieditor.ui.util.FixedIn31;
 
 public class Instrument extends LabelDescription implements IModel {
 	private InstrumentDocument doc;
@@ -12,9 +11,11 @@ public class Instrument extends LabelDescription implements IModel {
 
 	public Instrument(InstrumentDocument doc, String parentId,
 			String parentVersion) throws Exception {
+		// super(doc.getInstrument().getId(), doc.getInstrument().getVersion(),
+		// parentId, parentVersion, FixedIn31.getLabelList(), FixedIn31
+		// .getDesrcList());
 		super(doc.getInstrument().getId(), doc.getInstrument().getVersion(),
-				parentId, parentVersion, FixedIn31.getLabelList(), FixedIn31
-						.getDesrcList());
+				parentId, parentVersion, null, null);
 
 		if (doc == null) {
 			this.doc = InstrumentDocument.Factory.newInstance();

@@ -1,43 +1,22 @@
 package org.ddialliance.ddieditor.ui.model;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import org.ddialliance.ddieditor.model.conceptual.ConceptualType;
-import org.ddialliance.ddieditor.ui.editor.category.CategoryEditor;
-import org.ddialliance.ddieditor.ui.editor.category.CategorySchemeEditor;
-import org.ddialliance.ddieditor.ui.editor.code.CodeSchemeEditor;
-import org.ddialliance.ddieditor.ui.editor.concept.ConceptEditor;
-import org.ddialliance.ddieditor.ui.editor.concept.ConceptSchemeEditor;
-import org.ddialliance.ddieditor.ui.editor.file.FileEditor;
-import org.ddialliance.ddieditor.ui.editor.instrument.ComputationItemEditor;
-import org.ddialliance.ddieditor.ui.editor.instrument.ControlConstructSchemeEditor;
-import org.ddialliance.ddieditor.ui.editor.instrument.IfThenElseEditor;
-import org.ddialliance.ddieditor.ui.editor.instrument.InstrumentEditor;
-import org.ddialliance.ddieditor.ui.editor.instrument.LoopEditor;
-import org.ddialliance.ddieditor.ui.editor.instrument.QuestionConstructEditor;
-import org.ddialliance.ddieditor.ui.editor.instrument.RepeatUntilEditor;
-import org.ddialliance.ddieditor.ui.editor.instrument.RepeatWhileEditor;
-import org.ddialliance.ddieditor.ui.editor.instrument.SequenceEditor;
-import org.ddialliance.ddieditor.ui.editor.instrument.StatementItemEditor;
-import org.ddialliance.ddieditor.ui.editor.question.MultipleQuestionItemEditor;
-import org.ddialliance.ddieditor.ui.editor.question.QuestionItemEditor;
-import org.ddialliance.ddieditor.ui.editor.question.QuestionSchemeEditor;
-import org.ddialliance.ddieditor.ui.editor.study.StudyUnitEditor;
-import org.ddialliance.ddieditor.ui.editor.universe.UniverseEditor;
-import org.ddialliance.ddieditor.ui.editor.universe.UniverseSchemeEditor;
-import org.ddialliance.ddieditor.ui.editor.variable.VariableEditor;
-import org.ddialliance.ddieditor.ui.editor.variable.VariableSchemeEditor;
-import org.ddialliance.ddieditor.ui.perspective.CategoryPerspective;
-import org.ddialliance.ddieditor.ui.perspective.CodesPerspective;
-import org.ddialliance.ddieditor.ui.perspective.ConceptsPerspective;
-import org.ddialliance.ddieditor.ui.perspective.InfoPerspective;
-import org.ddialliance.ddieditor.ui.perspective.InstrumentPerspective;
-import org.ddialliance.ddieditor.ui.perspective.QuestionsPerspective;
-import org.ddialliance.ddieditor.ui.perspective.UniversePerspective;
-import org.ddialliance.ddieditor.ui.perspective.VariablePerspective;
 import org.ddialliance.ddiftp.util.DDIFtpException;
 import org.ddialliance.ddiftp.util.Translator;
+import org.ddialliance.ddiftp.util.log.Log;
+import org.ddialliance.ddiftp.util.log.LogFactory;
+import org.ddialliance.ddiftp.util.log.LogType;
 
 /**
  * Type to bind DDI elements with Eclipse RCP via the following properties:
@@ -55,21 +34,21 @@ import org.ddialliance.ddiftp.util.Translator;
  */
 public enum ElementType {
 	// application
-	FILE("", InfoPerspective.ID, FileEditor.ID, "", "ddi3file.label", "", null), MAINTAINABLE_LIGHTLABEL(
+	FILE("", getID("InfoPerspective.ID"), getID("FileEditor.ID"), "", "ddi3file.label", "", null), MAINTAINABLE_LIGHTLABEL(
 			"", "", "", "", "", "", null),
 	// note
 	NOTE("Note", null, null, "note", "Note.label", "", null),
 
 	// study unit
-	CONCEPTUAL_STUDY_UNIT("studyunit__StudyUnit", "", StudyUnitEditor.ID, "",
+	CONCEPTUAL_STUDY_UNIT("studyunit__StudyUnit", "", getID("StudyUnitEditor.ID"), "",
 			"InfoView.label.studyUnitLabel.StudyUnit", "OPEN", null), STUDY_UNIT(
-			"studyunit__StudyUnit", "", StudyUnitEditor.ID, "stdu",
+			"studyunit__StudyUnit", "", getID("StudyUnitEditor.ID"), "stdu",
 			"InfoView.label.studyUnitLabel.StudyUnit", "OPEN", null),
 
 	// universe
-	UNIVERSE("Universe", UniversePerspective.ID, UniverseEditor.ID, "univ",
+	UNIVERSE("Universe", getID("UniversePerspective.ID"), getID("UniverseEditor.ID"), "univ",
 			"UniverseView.label.universeLabel.Universe", "", null), UNIVERSE_SCHEME(
-			"UniverseScheme", UniversePerspective.ID, UniverseSchemeEditor.ID,
+			"UniverseScheme", getID("UniversePerspective.ID"), getID("UniverseSchemeEditor.ID"),
 			"unis", "UniverseView.label.universeSchemeLabel.UniverseScheme",
 			"", Arrays.asList(ElementType.UNIVERSE)),
 
@@ -78,9 +57,9 @@ public enum ElementType {
 			"ConceptualComponent.label", "", null),
 
 	// concept
-	CONCEPT("Concept", ConceptsPerspective.ID, ConceptEditor.ID, "conc",
+	CONCEPT("Concept", getID("ConceptsPerspective.ID"), getID("ConceptEditor.ID"), "conc",
 			"ConceptView.label.conceptLabel.Concept", "", null), CONCEPT_SCHEME(
-			"ConceptScheme", ConceptsPerspective.ID, ConceptSchemeEditor.ID,
+			"ConceptScheme", getID("ConceptsPerspective.ID"), getID("ConceptSchemeEditor.ID"),
 			"cons", "ConceptView.label.conceptSchemeLabel.ConceptScheme", "",
 			Arrays.asList(ElementType.CONCEPT)),
 
@@ -89,54 +68,54 @@ public enum ElementType {
 			"DataCollection.label", "", null),
 
 	// question
-	QUESTION_ITEM("QuestionItem", QuestionsPerspective.ID,
-			QuestionItemEditor.ID, "quei",
+	QUESTION_ITEM("QuestionItem", getID("QuestionsPerspective.ID"),
+			getID("QuestionItemEditor.ID"), "quei",
 			"QuestionItemView.label.questionItemLabel.QuestionItem", "", null), SUB_QUESTION_ITEM(
-			"QuestionItem", QuestionsPerspective.ID, QuestionItemEditor.ID,
+			"QuestionItem", getID("QuestionsPerspective.ID"), getID("QuestionItemEditor.ID"),
 			"quei", "QuestionItemView.label.questionItemLabel.SubQuestionItem",
 			"", null), MULTIPLE_QUESTION_ITEM(
 			"MultipleQuestionItem",
-			QuestionsPerspective.ID,
-			MultipleQuestionItemEditor.ID,
+			getID("QuestionsPerspective.ID"),
+			getID("MultipleQuestionItemEditor.ID"),
 			"mquei",
 			"QuestionItemView.label.multipleQuestionItemLabel.MultipleQuestionItem",
 			"", Arrays.asList(ElementType.SUB_QUESTION_ITEM)), QUESTION_SCHEME(
-			"QuestionScheme", QuestionsPerspective.ID, QuestionSchemeEditor.ID,
+			"QuestionScheme", getID("QuestionsPerspective.ID"), getID("QuestionSchemeEditor.ID"),
 			"ques",
 			"QuestionItemView.label.questionSchemeLabel.QuesitionScheme", "",
 			Arrays.asList(ElementType.MULTIPLE_QUESTION_ITEM,
 					ElementType.QUESTION_ITEM)),
 
 	// category
-	CATEGORY("Category", CategoryPerspective.ID, CategoryEditor.ID, "cat",
+	CATEGORY("Category", getID("CategoryPerspective.ID"), getID("CategoryEditor.ID"), "cat",
 			"CategoryView.label.categoryLabel.Category", "", null), CATEGORY_SCHEME(
-			"CategoryScheme", CategoryPerspective.ID, CategorySchemeEditor.ID,
+			"CategoryScheme", getID("CategoryPerspective.ID"), getID("CategorySchemeEditor.ID"),
 			"cats", "CategoryView.label.categorySchemeLabel.CategoryScheme",
 			"", Arrays.asList(ElementType.CATEGORY)),
 
 	// instrument
-	INSTRUMENT("Instrument", InstrumentPerspective.ID, InstrumentEditor.ID,
+	INSTRUMENT("Instrument", getID("InstrumentPerspective.ID"), getID("InstrumentEditor.ID"),
 			"inst", "InstrumentItemView.label.instrumentItemLabel.Instrument",
 			"", null), QUESTION_CONSTRUCT("QuestionConstruct",
-			InstrumentPerspective.ID, QuestionConstructEditor.ID, "quec",
+					getID("InstrumentPerspective.ID"), getID("QuestionConstructEditor.ID"), "quec",
 			"InstrumentView.QuestionConstruct.label", "", null), STATEMENT_ITEM(
-			"StatementItem", InstrumentPerspective.ID, StatementItemEditor.ID,
+			"StatementItem", getID("InstrumentPerspective.ID"), getID("StatementItemEditor.ID"),
 			"stai", "InstrumentView.StatementItem.label", "", null), IF_THEN_ELSE(
-			"IfThenElse", InstrumentPerspective.ID, IfThenElseEditor.ID,
+			"IfThenElse", getID("InstrumentPerspective.ID"), getID("IfThenElseEditor.ID"),
 			"ifth", "InstrumentView.IfThenElse.label", "", null), REPEAT_UNTIL(
-			"RepeatUntil", InstrumentPerspective.ID, RepeatUntilEditor.ID,
+			"RepeatUntil", getID("InstrumentPerspective.ID"), getID("RepeatUntilEditor.ID"),
 			"repu", "InstrumentView.RepeatUntil.label", "", null), LOOP("Loop",
-			InstrumentPerspective.ID, LoopEditor.ID, "loop",
+					getID("InstrumentPerspective.ID"), getID("LoopEditor.ID"), "loop",
 			"InstrumentView.Loop.label", "", null), REPEAT_WHILE("RepeatWhile",
-			InstrumentPerspective.ID, RepeatWhileEditor.ID, "repw",
+					getID("InstrumentPerspective.ID"), getID("RepeatWhileEditor.ID"), "repw",
 			"InstrumentView.RepeatWhile.label", "", null), SEQUENCE("Sequence",
-			InstrumentPerspective.ID, SequenceEditor.ID, "seqc",
+					getID("InstrumentPerspective.ID"), getID("SequenceEditor.ID"), "seqc",
 			"InstrumentView.Sequence.label", "", null), COMPUTATION_ITEM(
-			"ComputationItem", InstrumentPerspective.ID,
-			ComputationItemEditor.ID, "copi",
+			"ComputationItem", getID("InstrumentPerspective.ID"),
+					getID("ComputationItemEditor.ID"), "copi",
 			"InstrumentView.ComputationItem.label", "", null), CONTROL_CONSTRUCT_SCHEME(
-			"ControlConstructScheme", InstrumentPerspective.ID,
-			ControlConstructSchemeEditor.ID, "cocs",
+			"ControlConstructScheme", getID("InstrumentPerspective.ID"),
+					getID("ControlConstructSchemeEditor.ID"), "cocs",
 			"InstrumentView.ControlConstructScheme.label", "", Arrays.asList(
 					ElementType.QUESTION_CONSTRUCT, ElementType.STATEMENT_ITEM,
 					ElementType.IF_THEN_ELSE, ElementType.REPEAT_UNTIL,
@@ -150,13 +129,13 @@ public enum ElementType {
 			"", null),
 
 	// code
-	CODE_SCHEME("CodeScheme", CodesPerspective.ID, CodeSchemeEditor.ID, "cods",
+	CODE_SCHEME("CodeScheme", getID("CodesPerspective.ID"), getID("CodeSchemeEditor.ID"), "cods",
 			"codeView.label.codeSchemeLabel.CodeScheme", "", null),
 
 	// variable
-	VARIABLE("Variable", VariablePerspective.ID, VariableEditor.ID, "vari",
+	VARIABLE("Variable", getID("VariablePerspective.ID"), getID("VariableEditor.ID"), "vari",
 			"Variable", "", null), VARIABLE_SCHEME("VariableScheme",
-			VariablePerspective.ID, VariableSchemeEditor.ID, "vars",
+			getID("VariablePerspective.ID"), getID("VariableSchemeEditor.ID"), "vars",
 			"VariableScheme", "", Arrays.asList(ElementType.VARIABLE)),
 
 	// physical data product
@@ -184,6 +163,12 @@ public enum ElementType {
 
 	// reusable
 	SOFTWARE("Software", null, null, "sofw", "Software.label", "", null);
+	
+	private static Log log = LogFactory.getLog(LogType.EXCEPTION,
+	        ElementType.class);
+
+	private static final Map idCache = new HashMap();
+
 
 	private String elementName;
 	private String perspectiveId;
@@ -221,6 +206,37 @@ public enum ElementType {
 		this.displayMessageEntry = displayMessageEntry;
 		this.withOpen = withOpen;
 		this.subElements = subElements;
+	}
+	
+	private static String getID(String key) {
+		String value = (String) idCache.get(key);
+		if (value == null) {
+			// read property file
+			Properties properties = new Properties();
+			File file = new File("resources" + File.separator
+					+ "ddiftp-editor-id.properties");
+			try {
+				FileInputStream fileInputStream = new FileInputStream(file); 
+				properties.load(fileInputStream);
+				fileInputStream.close();
+			} catch (FileNotFoundException e) {
+				log.error(e);
+				return null;
+			} catch (IOException e) {
+				log.error(e);
+				return null;
+			}
+
+			// initialize cache
+			Enumeration<Object> enumration = properties.keys();
+			while (enumration.hasMoreElements()) {
+				String propKey = (String) enumration.nextElement();
+				value = properties.getProperty(propKey);
+				idCache.put(value, propKey);
+			}
+			value = (String) idCache.get(key);
+		}
+		return value;
 	}
 
 	/**

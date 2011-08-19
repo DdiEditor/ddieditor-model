@@ -6,7 +6,7 @@ package org.ddialliance.ddieditor.ui.model.question;
  */
 /*
  * $Author: ddadak $ 
- * $Date: 2011-08-10 09:10:50 +0200 (Wed, 10 Aug 2011) $ 
+ * $Date: 2011-08-10 09:10:50 +0200 (ons, 10 aug 2011) $ 
  * $Revision: 2677 $
  */
 
@@ -34,7 +34,6 @@ import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
 import org.ddialliance.ddieditor.ui.model.Model;
 import org.ddialliance.ddieditor.ui.model.ModelAccessor;
 import org.ddialliance.ddieditor.ui.model.ModelIdentifingType;
-import org.ddialliance.ddieditor.ui.util.LanguageUtil;
 import org.ddialliance.ddiftp.util.DDIFtpException;
 import org.ddialliance.ddiftp.util.Translator;
 import org.ddialliance.ddiftp.util.log.Log;
@@ -364,7 +363,7 @@ public class QuestionItem extends Model {
 				}
 			} else {
 				DynamicTextType questionText = (DynamicTextType) XmlBeansUtil
-						.getLangElement(LanguageUtil.getDisplayLanguage(),
+						.getLangElement(getDisplayLanguage(),
 								getQuestionText());
 				LiteralTextType lTextType = (LiteralTextType) questionText
 						.getTextList()

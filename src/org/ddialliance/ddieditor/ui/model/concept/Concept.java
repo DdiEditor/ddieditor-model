@@ -6,7 +6,7 @@ package org.ddialliance.ddieditor.ui.model.concept;
  */
 /*
  * $Author: ddadak $ 
- * $Date: 2011-01-28 11:42:26 +0100 (Fri, 28 Jan 2011) $ 
+ * $Date: 2011-01-28 11:42:26 +0100 (fre, 28 jan 2011) $ 
  * $Revision: 2176 $
  */
 
