@@ -15,6 +15,7 @@ import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.StructuredStringTypeImpl;
 import org.ddialliance.ddieditor.logic.identification.IdentificationManager;
 import org.ddialliance.ddieditor.persistenceaccess.maintainablelabel.MaintainableLabelQueryResult;
 import org.ddialliance.ddieditor.persistenceaccess.maintainablelabel.MaintainableLabelUpdateElement;
+import org.ddialliance.ddieditor.ui.util.LanguageUtil;
 import org.ddialliance.ddieditor.util.XmlObjectUtil;
 import org.ddialliance.ddiftp.util.DDIFtpException;
 import org.ddialliance.ddiftp.util.ReflectionUtil;
@@ -324,7 +325,7 @@ public abstract class LabelDescriptionScheme extends Model implements IModel,
 		LabelType label = null;
 		if (labels.size() > 0) {
 			label = (LabelType) XmlBeansUtil.getLangElement(
-					getDisplayLanguage(), labels);
+					LanguageUtil.getDisplayLanguage(), labels);
 			if (label != null) {
 				// Label in Display language - found
 				if (text.length() > 0) {
@@ -350,7 +351,7 @@ public abstract class LabelDescriptionScheme extends Model implements IModel,
 			label = LabelDocument.Factory.newInstance().addNewLabel();
 			label.setTranslated(false);
 			label.setTranslatable(true);
-			label.setLang(getOriginalLanguage());
+			label.setLang(LanguageUtil.getOriginalLanguage());
 			XmlBeansUtil.setTextOnMixedElement(label, text);
 			labels.add(label);
 			maintainableUpdateLabels.add(new MaintainableLabelUpdateElement(
@@ -364,7 +365,7 @@ public abstract class LabelDescriptionScheme extends Model implements IModel,
 	public String getDisplayLabel() throws DDIFtpException {
 		if (maintainableUpdateLabels.size() > 0) {
 			return XmlBeansUtil.getTextOnMixedElement((XmlObject) XmlBeansUtil
-					.getLangElement(getDisplayLanguage(),
+					.getLangElement(LanguageUtil.getDisplayLanguage(),
 							getNonDeletedElements(maintainableUpdateLabels)));
 		}
 
@@ -397,7 +398,7 @@ public abstract class LabelDescriptionScheme extends Model implements IModel,
 		StructuredStringType descr = null;
 		if (descrs.size() > 0) {
 			descr = (StructuredStringType) XmlBeansUtil.getLangElement(
-					getDisplayLanguage(), descrs);
+					LanguageUtil.getDisplayLanguage(), descrs);
 			if (descr != null) {
 				if (text.length() > 0) {
 					XmlBeansUtil.setTextOnMixedElement(descr, text);
@@ -414,7 +415,7 @@ public abstract class LabelDescriptionScheme extends Model implements IModel,
 			descriptionType = StructuredStringType.Factory.newInstance();
 			descriptionType.setTranslated(false);
 			descriptionType.setTranslatable(true);
-			descriptionType.setLang(getOriginalLanguage());
+			descriptionType.setLang(LanguageUtil.getOriginalLanguage());
 			XmlBeansUtil.setTextOnMixedElement(descriptionType, text);
 			descrs.add(descriptionType);
 			maintainableUpdateDescriptions
@@ -428,10 +429,9 @@ public abstract class LabelDescriptionScheme extends Model implements IModel,
 	public String getDisplayDescr() throws DDIFtpException {
 		if (maintainableUpdateDescriptions.size() > 0) {
 			return XmlBeansUtil
-					.getTextOnMixedElement((XmlObject) XmlBeansUtil
-							.getLangElement(
-									getDisplayLanguage(),
-									getNonDeletedElements(maintainableUpdateDescriptions)));
+					.getTextOnMixedElement((XmlObject) XmlBeansUtil.getLangElement(
+							LanguageUtil.getDisplayLanguage(),
+							getNonDeletedElements(maintainableUpdateDescriptions)));
 		}
 
 		// No description found - not an error

@@ -7,7 +7,7 @@ package org.ddialliance.ddieditor.ui.model.question;
  */
 /*
  * $Author: ddajvj $ 
- * $Date: 2009-10-08 09:11:14 +0200 (tor, 08 okt 2009) $ 
+ * $Date: 2009-10-08 09:11:14 +0200 (Thu, 08 Oct 2009) $ 
  * $Revision: 630 $
  */
 

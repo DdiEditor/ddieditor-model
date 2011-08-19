@@ -27,9 +27,11 @@ import org.ddialliance.ddi3.xml.xmlbeans.reusable.ReferenceType;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
 import org.ddialliance.ddieditor.persistenceaccess.maintainablelabel.MaintainableLabelQueryResult;
 import org.ddialliance.ddieditor.persistenceaccess.maintainablelabel.MaintainableLabelUpdateElement;
+import org.ddialliance.ddieditor.ui.editor.Editor;
 import org.ddialliance.ddieditor.ui.model.Model;
 import org.ddialliance.ddieditor.ui.model.ModelAccessor;
 import org.ddialliance.ddieditor.ui.model.ModelIdentifingType;
+import org.ddialliance.ddieditor.ui.util.LanguageUtil;
 import org.ddialliance.ddieditor.util.XmlObjectUtil;
 import org.ddialliance.ddiftp.util.DDIFtpException;
 import org.ddialliance.ddiftp.util.ReflectionUtil;
@@ -342,7 +344,7 @@ public class MultipleQuestionItem extends Model {
 		} else if (type.equals(ModelIdentifingType.Type_A.class)) {
 			// Set Question Text
 			DynamicTextType questionText = (DynamicTextType) XmlBeansUtil
-					.getLangElement(getDisplayLanguage(),
+					.getLangElement(LanguageUtil.getDisplayLanguage(),
 							getQuestionText());
 			if (questionText == null) {
 				if (value != null && !value.equals("")) {
@@ -350,7 +352,7 @@ public class MultipleQuestionItem extends Model {
 							.addNewQuestionText();
 					questionText.setTranslated(false);
 					questionText.setTranslatable(true);
-					questionText.setLang(getOriginalLanguage());
+					questionText.setLang(LanguageUtil.getOriginalLanguage());
 					TextType textType = questionText.addNewText();
 					LiteralTextType lTextType = (LiteralTextType) textType
 							.substitute(LiteralTextDocument.type
