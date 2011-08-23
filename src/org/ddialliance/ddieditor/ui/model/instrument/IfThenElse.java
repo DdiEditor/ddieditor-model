@@ -77,6 +77,16 @@ public class IfThenElse extends Model {
 			throw new Exception(
 					Translator.trans("IfThenElse.mess.MandatoryThenReferenceHasNotBeenSpecified")); //$NON-NLS-1$
 		}
+		
+		// check condition
+		if (doc.getIfThenElse().getIfCondition() != null) {
+			String ddaProgLang = DdiEditorConfig
+					.get(DdiEditorConfig.DDA_DDI_INSTRUMENT_PROGRAM_LANG);
+			if (getIfCondition().getProgrammingLanguage().equals(ddaProgLang)) {
+				ConditionalUtil.validateCondition(getIfCondition()
+						.getStringValue());
+			}
+		}
 	}
 
 	public ProgrammingLanguageCodeType getIfCondition() {
