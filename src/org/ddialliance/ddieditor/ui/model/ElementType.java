@@ -167,7 +167,7 @@ public enum ElementType {
 	private static Log log = LogFactory.getLog(LogType.EXCEPTION,
 	        ElementType.class);
 
-	private static final Map idCache = new HashMap();
+	private static Map idCache = null;
 
 
 	private String elementName;
@@ -209,21 +209,24 @@ public enum ElementType {
 	}
 	
 	private static String getID(String key) {
+		if (idCache == null) {
+			idCache = new HashMap();
+		}
 		String value = (String) idCache.get(key);
 		if (value == null) {
 			// read property file
 			Properties properties = new Properties();
 			File file = new File("resources" + File.separator
-					+ "ddiftp-editor-id.properties");
+					+ "model-editor-id.properties");
 			try {
 				FileInputStream fileInputStream = new FileInputStream(file); 
 				properties.load(fileInputStream);
 				fileInputStream.close();
 			} catch (FileNotFoundException e) {
-				log.error(e);
+				System.out.println("'model-editor-id.properties' file not found: "+e.getMessage());
 				return null;
 			} catch (IOException e) {
-				log.error(e);
+				System.out.println("IO error reading 'model-editor-id.properties' file: "+e.getMessage());
 				return null;
 			}
 
@@ -232,7 +235,7 @@ public enum ElementType {
 			while (enumration.hasMoreElements()) {
 				String propKey = (String) enumration.nextElement();
 				value = properties.getProperty(propKey);
-				idCache.put(value, propKey);
+				idCache.put(propKey, value);
 			}
 			value = (String) idCache.get(key);
 		}

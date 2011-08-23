@@ -73,4 +73,9 @@ public interface IModel {
 	 * @throws Exception
 	 */
 	public void applyChange(Object value, Class<?> type) throws Exception;
+	/**
+	 * Set Display Language
+	 * 
+	 */
+	public void setDisplayLanguage(String language);
 }
