@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.core.runtime,
  ddieditor;bundle-version="0.14.0",
  lib-java;bundle-version="0.8.0"
 Bundle-ActivationPolicy: lazy
-Export-Package: dk.dda.ddieditor.model;uses:="org.osgi.framework",
+Export-Package: dk.dda.ddieditor.model,
  org.ddialliance.ddieditor.ui.dbxml;uses:="org.ddialliance.ddieditor.model.lightxmlobject,org.ddialliance.ddieditor.ui.model",
  org.ddialliance.ddieditor.ui.dbxml.category;
   uses:="org.ddialliance.ddieditor.ui.model.category,
