@@ -56,6 +56,20 @@ public class CodeScheme extends Model implements IModel {
 	public SchemeReferenceType getCategorySchemeReference() {
 		return doc.getCodeScheme().getCategorySchemeReference();
 	}
+	
+	/**
+	 * Get ID of Default Category Scheme
+	 * 
+	 * @return String
+	 */
+	public String getDefaultCategorySchemeID() {
+		SchemeReferenceType categoryScheme = getCategorySchemeReference();
+		if (categoryScheme == null || categoryScheme.getIDList().size() == 0) {
+			return null;
+		}
+		return XmlBeansUtil.getTextOnMixedElement(categoryScheme.getIDList()
+				.get(0));
+	}
 
 	/**
 	 * 
@@ -122,12 +136,12 @@ public class CodeScheme extends Model implements IModel {
 					doc.getCodeScheme().unsetCategorySchemeReference();
 				} else {
 					// set ref
-				ref.getIDList().get(0).setStringValue(id);
+					ref.getIDList().get(0).setStringValue(id);
 				}
 			}
 		} else {
-			log.debug("******** Class type not supported: " + type
-					+ " ********");
+			throw new Exception("type not supported: "
+					+ type.getClass().getName());
 		}
 	}
 
