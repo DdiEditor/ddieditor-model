@@ -268,15 +268,6 @@ public enum ElementType {
 	}
 
 	/**
-	 * Get message key
-	 * 
-	 * @return message key
-	 */
-	public String getDisplayMessageEntry() {
-		return displayMessageEntry;
-	}
-
-	/**
 	 * Translate message key
 	 * 
 	 * @return translated message key
