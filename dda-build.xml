@@ -43,9 +43,10 @@
 
 	<target name="deploy-to-ddieditor-ui" description="Copies resources to ddieditor-ui/bin dir">
 		<!-- resource files -->
-		<copy todir="../ddieditor-ui/bin/resources">
+                <echo>Copy resources from ddieditor-model to ddieditor-ui: ${src.resources.dir}</echo> 
+		<copy todir="../ddieditor_ui/bin/resources">
 			<fileset dir="${src.resources.dir}">
-				<include name="**/*.*" />
+				<include name="*.*" />
 			</fileset>
 		</copy>
 	</target>
