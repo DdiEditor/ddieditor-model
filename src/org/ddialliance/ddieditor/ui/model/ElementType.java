@@ -44,13 +44,31 @@ public enum ElementType {
 			"InfoView.label.studyUnitLabel.StudyUnit", "OPEN", null), STUDY_UNIT(
 			"studyunit__StudyUnit", "", getID("StudyUnitEditor.ID"), "stdu",
 			"InfoView.label.studyUnitLabel.StudyUnit", "OPEN", null),
+			
+	// purpose
+	PURPOSE("Purpose", null, null, "purp", "", "", null),
+
+	// topical coverage
+	TOPICAL_COVERAGE("TopicalCoverage", null, null, "topcov", "", "", null),
+
+	// spatial coverage
+	SPATIAL_COVERAGE("SpatialCoverage", null, null, "spacov", "", "", null),
+
+	// temporal coverage
+	TEMPORAL_COVERAGE("TemporalCoverage", null, null, "tmpcov", "", "", null),
 
 	// universe
 	UNIVERSE("Universe", getID("UniversePerspective.ID"), getID("UniverseEditor.ID"), "univ",
-			"UniverseView.label.universeLabel.Universe", "", null), UNIVERSE_SCHEME(
+			"UniverseView.label.universeLabel.Universe", "", null), 
+	UNIVERSE_SCHEME(
 			"UniverseScheme", getID("UniversePerspective.ID"), getID("UniverseSchemeEditor.ID"),
 			"unis", "UniverseView.label.universeSchemeLabel.UniverseScheme",
 			"", Arrays.asList(ElementType.UNIVERSE)),
+	
+	// geographic
+	GEOGRAPHICSTRUCTURESCHEME("GeographicStructureScheme", null, null, "geostrs", "", "", null),
+	GEOGRAPHICSTRUCTURE("GeographicStructure", null, null, "geostr", "", "", null),
+	GEOGRAPHY("Geography", null, null, "geo", "", "", null),
 
 	// conceptual component
 	CONCEPTUAL_COMPONENT("ConceptualComponent", null, null, "coco",
