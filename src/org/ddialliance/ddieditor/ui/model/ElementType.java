@@ -45,6 +45,9 @@ public enum ElementType {
 			"studyunit__StudyUnit", "", getID("StudyUnitEditor.ID"), "stdu",
 			"InfoView.label.studyUnitLabel.StudyUnit", "OPEN", null),
 			
+	// abstract
+	ABSTRACT("Abstract", null, null, "abst", "", "", null),
+
 	// purpose
 	PURPOSE("Purpose", null, null, "purp", "", "", null),
 
@@ -60,8 +63,7 @@ public enum ElementType {
 	// universe
 	UNIVERSE("Universe", getID("UniversePerspective.ID"), getID("UniverseEditor.ID"), "univ",
 			"UniverseView.label.universeLabel.Universe", "", null), 
-	UNIVERSE_SCHEME(
-			"UniverseScheme", getID("UniversePerspective.ID"), getID("UniverseSchemeEditor.ID"),
+	UNIVERSE_SCHEME("UniverseScheme", getID("UniversePerspective.ID"), getID("UniverseSchemeEditor.ID"),
 			"unis", "UniverseView.label.universeSchemeLabel.UniverseScheme",
 			"", Arrays.asList(ElementType.UNIVERSE)),
 	
