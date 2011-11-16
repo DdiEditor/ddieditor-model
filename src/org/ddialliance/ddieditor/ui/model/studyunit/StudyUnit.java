@@ -5,7 +5,10 @@ import java.util.List;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.aspectj.weaver.NewConstructorTypeMunger;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.CitationType;
+import org.ddialliance.ddi3.xml.xmlbeans.reusable.CoverageDocument;
+import org.ddialliance.ddi3.xml.xmlbeans.reusable.CoverageType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.DateType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.FundingInformationDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.FundingInformationType;
@@ -14,8 +17,12 @@ import org.ddialliance.ddi3.xml.xmlbeans.reusable.IdentifiedStructuredStringType
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.InternationalStringType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.ReferenceType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.StructuredStringType;
+import org.ddialliance.ddi3.xml.xmlbeans.reusable.TemporalCoverageType;
+import org.ddialliance.ddi3.xml.xmlbeans.reusable.TopicalCoverageType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.UniverseReferenceDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.CitationDocumentImpl;
+import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.CoverageDocumentImpl;
+import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.CoverageTypeImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.NameDocumentImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.UniverseReferenceDocumentImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.AbstractDocument;
@@ -50,6 +57,7 @@ public class StudyUnit extends Model {
 	private SubElement universeRefSubElements;
 	private SubElement fundingSubElements;
 	private SubElement purposeSubElements;
+	private SubElement coverageSubElements;
 
 	/**
 	 * Study Unit constructor
@@ -79,6 +87,8 @@ public class StudyUnit extends Model {
 					.getSubElement("FundingInformation"));
 			purposeSubElements = new SubElement(studyUnitQueryResult
 					.getSubElement("Purpose"));
+			coverageSubElements = new SubElement(studyUnitQueryResult
+					.getSubElement("Coverage"));
 		}
 	}
 
@@ -91,6 +101,7 @@ public class StudyUnit extends Model {
 		universeRefSubElements.changed(false);
 		fundingSubElements.changed(false);
 		purposeSubElements.changed(false);
+		coverageSubElements.changed(false);
 	}
 
 	@Override
@@ -170,6 +181,16 @@ public class StudyUnit extends Model {
 			}
 			doc.getStudyUnit().setPurposeArray(purpose);
 		}
+
+		// coverageSubElements
+		if (coverageSubElements.getXmlObjects().length > 0) {
+			CoverageType coverage = ((CoverageDocumentImpl) coverageSubElements
+					.getXmlObjects()[0]).getCoverage();
+			if (coverage != null) {
+				doc.getStudyUnit().setCoverage(coverage);
+			}
+		}
+
 		return doc;
 	}
 
@@ -1009,6 +1030,14 @@ public class StudyUnit extends Model {
 			}
 		}
 		return "";
+	}
+	
+	public CoverageDocument getCoverage() {
+		if (coverageSubElements.getXmlObjects().length > 0) {
+			return (CoverageDocumentImpl) coverageSubElements
+					.getXmlObjects()[0];
+		}
+		return null;
 	}
 
 	protected class SubElement {
