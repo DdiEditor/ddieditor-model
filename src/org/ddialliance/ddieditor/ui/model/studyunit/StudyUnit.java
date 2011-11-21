@@ -77,18 +77,18 @@ public class StudyUnit extends Model {
 		super(id, version, parentId, parentVersion, agency);
 		this.maintainableLabelQueryResult = studyUnitQueryResult;
 		if (studyUnitQueryResult != null) {
-			citationSubElements = new SubElement(studyUnitQueryResult
-					.getSubElement("Citation"));
-			abstractSubElements = new SubElement(studyUnitQueryResult
-					.getSubElement("Abstract"));
-			universeRefSubElements = new SubElement(studyUnitQueryResult
-					.getSubElement("UniverseReference"));
-			fundingSubElements = new SubElement(studyUnitQueryResult
-					.getSubElement("FundingInformation"));
-			purposeSubElements = new SubElement(studyUnitQueryResult
-					.getSubElement("Purpose"));
-			coverageSubElements = new SubElement(studyUnitQueryResult
-					.getSubElement("Coverage"));
+			citationSubElements = new SubElement(
+					studyUnitQueryResult.getSubElement("Citation"));
+			abstractSubElements = new SubElement(
+					studyUnitQueryResult.getSubElement("Abstract"));
+			universeRefSubElements = new SubElement(
+					studyUnitQueryResult.getSubElement("UniverseReference"));
+			fundingSubElements = new SubElement(
+					studyUnitQueryResult.getSubElement("FundingInformation"));
+			purposeSubElements = new SubElement(
+					studyUnitQueryResult.getSubElement("Purpose"));
+			coverageSubElements = new SubElement(
+					studyUnitQueryResult.getSubElement("Coverage"));
 		}
 	}
 
@@ -391,7 +391,7 @@ public class StudyUnit extends Model {
 				return internationalStringType.getStringValue();
 			}
 		}
-		
+
 		if (log.isDebugEnabled()) {
 			log.debug("*** No matching International String ***");
 		}
@@ -583,8 +583,8 @@ public class StudyUnit extends Model {
 		for (int i = 0; i < citations.length; i++) {
 			CitationType citation = ((CitationDocumentImpl) citations[i])
 					.getCitation();
-			String subTitle = getInternationalString(citation
-					.getSubTitleArray(), languageCode);
+			String subTitle = getInternationalString(
+					citation.getSubTitleArray(), languageCode);
 			if (subTitle.length() > 0) {
 				return subTitle;
 			}
@@ -605,8 +605,8 @@ public class StudyUnit extends Model {
 		for (int i = 0; i < citations.length; i++) {
 			CitationType citation = ((CitationDocumentImpl) citations[i])
 					.getCitation();
-			if (setInternationalString(altTitle, citation
-					.getAlternateTitleArray(), languageCode)) {
+			if (setInternationalString(altTitle,
+					citation.getAlternateTitleArray(), languageCode)) {
 				citationSubElements.changed(true);
 				citationSubElements.setCrudValue(i + 1); // update - starts by
 				// '1'
@@ -634,8 +634,8 @@ public class StudyUnit extends Model {
 		for (int i = 0; i < citations.length; i++) {
 			CitationType citation = ((CitationDocumentImpl) citations[i])
 					.getCitation();
-			String altTitle = getInternationalString(citation
-					.getAlternateTitleArray(), languageCode);
+			String altTitle = getInternationalString(
+					citation.getAlternateTitleArray(), languageCode);
 			if (altTitle.length() > 0) {
 				return altTitle;
 			}
@@ -739,8 +739,8 @@ public class StudyUnit extends Model {
 		for (int i = 0; i < citations.length; i++) {
 			CitationType citation = ((CitationDocumentImpl) citations[i])
 					.getCitation();
-			String publisher = getInternationalString(citation
-					.getPublisherArray(), languageCode);
+			String publisher = getInternationalString(
+					citation.getPublisherArray(), languageCode);
 			if (publisher.length() > 0) {
 				return publisher;
 			}
@@ -761,8 +761,8 @@ public class StudyUnit extends Model {
 		for (int i = 0; i < citations.length; i++) {
 			CitationType citation = ((CitationDocumentImpl) citations[i])
 					.getCitation();
-			if (setInternationalString(contributor, citation
-					.getContributorArray(), languageCode)) {
+			if (setInternationalString(contributor,
+					citation.getContributorArray(), languageCode)) {
 				citationSubElements.changed(true);
 				citationSubElements.setCrudValue(i + 1); // update - starts by
 				// '1'
@@ -790,8 +790,8 @@ public class StudyUnit extends Model {
 		for (int i = 0; i < citations.length; i++) {
 			CitationType citation = ((CitationDocumentImpl) citations[i])
 					.getCitation();
-			String contributer = getInternationalString(citation
-					.getContributorArray(), languageCode);
+			String contributer = getInternationalString(
+					citation.getContributorArray(), languageCode);
 			if (contributer.length() > 0) {
 				return contributer;
 			}
@@ -808,8 +808,7 @@ public class StudyUnit extends Model {
 	public void setCitationPublicationDate(String publicationDate) {
 		XmlObject[] citations = citationSubElements.getXmlObjects();
 		if (citations.length > 1) {
-			log
-					.error("*** More Study Unit Citations - 'Publication Date' of first one set! ***");
+			log.error("*** More Study Unit Citations - 'Publication Date' of first one set! ***");
 		}
 		CitationType citation = ((CitationDocumentImpl) citations[0])
 				.getCitation();
@@ -856,8 +855,7 @@ public class StudyUnit extends Model {
 	public void setCitationLanguage(String language) {
 		XmlObject[] citations = citationSubElements.getXmlObjects();
 		if (citations.length > 1) {
-			log
-					.error("*** More Study Unit Citations - 'Language' of first one used! ***");
+			log.error("*** More Study Unit Citations - 'Language' of first one used! ***");
 		}
 		CitationType citation = ((CitationDocumentImpl) citations[0])
 				.getCitation();
@@ -875,8 +873,7 @@ public class StudyUnit extends Model {
 		XmlObject[] citations = citationSubElements.getXmlObjects();
 		// TODO add is debug enabled
 		if (citations.length > 1) {
-			log
-					.error("*** More Study Unit Citations - 'Language' of first one retrieved! ***");
+			log.error("*** More Study Unit Citations - 'Language' of first one retrieved! ***");
 		}
 		CitationType citation = ((CitationDocumentImpl) citations[0])
 				.getCitation();
@@ -953,11 +950,10 @@ public class StudyUnit extends Model {
 	 */
 	public String[] getUniverseRefId() throws DDIFtpException {
 		XmlObject[] universeRefs = universeRefSubElements.getXmlObjects();
-		
+
 		// TODO check up on this
 		if (universeRefs.length == 0) {
-			log
-					.debug("No Universe Reference element found - creating new element");
+			log.debug("No Universe Reference element found - creating new element");
 			UniverseReferenceDocument universeReferenceDocument = UniverseReferenceDocument.Factory
 					.newInstance();
 			universeRefSubElements
@@ -970,7 +966,7 @@ public class StudyUnit extends Model {
 			referenceType.addIdentifyingAgency("");
 			return new String[] { "" };
 		}
-		
+
 		String[] result = new String[universeRefs.length];
 		for (int i = 0; i < result.length; i++) {
 			result[i] = ((UniverseReferenceDocument) universeRefs[i])
@@ -1031,11 +1027,10 @@ public class StudyUnit extends Model {
 		}
 		return "";
 	}
-	
+
 	public CoverageDocument getCoverage() {
 		if (coverageSubElements.getXmlObjects().length > 0) {
-			return (CoverageDocumentImpl) coverageSubElements
-					.getXmlObjects()[0];
+			return (CoverageDocumentImpl) coverageSubElements.getXmlObjects()[0];
 		}
 		return null;
 	}
