@@ -26,10 +26,12 @@ import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.CoverageTypeImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.NameDocumentImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.UniverseReferenceDocumentImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.AbstractDocument;
+import org.ddialliance.ddi3.xml.xmlbeans.studyunit.KindOfDataType;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.PurposeDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.StudyUnitDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.StudyUnitType;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.impl.AbstractDocumentImpl;
+import org.ddialliance.ddi3.xml.xmlbeans.studyunit.impl.KindOfDataDocumentImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.impl.PurposeDocumentImpl;
 import org.ddialliance.ddieditor.persistenceaccess.maintainablelabel.MaintainableLabelQueryResult;
 import org.ddialliance.ddieditor.persistenceaccess.maintainablelabel.MaintainableLabelUpdateElement;
@@ -58,6 +60,7 @@ public class StudyUnit extends Model {
 	private SubElement fundingSubElements;
 	private SubElement purposeSubElements;
 	private SubElement coverageSubElements;
+	private SubElement kindOfDataSubElements;
 
 	/**
 	 * Study Unit constructor
@@ -89,6 +92,8 @@ public class StudyUnit extends Model {
 					studyUnitQueryResult.getSubElement("Purpose"));
 			coverageSubElements = new SubElement(
 					studyUnitQueryResult.getSubElement("Coverage"));
+			kindOfDataSubElements = new SubElement(
+					studyUnitQueryResult.getSubElement("KindOfData"));
 		}
 	}
 
@@ -189,6 +194,17 @@ public class StudyUnit extends Model {
 			if (coverage != null) {
 				doc.getStudyUnit().setCoverage(coverage);
 			}
+		}
+		
+		// kindOfDataSubElements
+		if (kindOfDataSubElements.getXmlObjects().length > 0) {
+			KindOfDataType[] kindOfDataArray = new KindOfDataType[kindOfDataSubElements
+					.getXmlObjects().length];
+			for (int i = 0; i < kindOfDataSubElements.getXmlObjects().length; i++) {
+				kindOfDataArray[i] = ((KindOfDataDocumentImpl) kindOfDataSubElements
+						.getXmlObjects()[i]).getKindOfData();
+			}
+			doc.getStudyUnit().setKindOfDataArray(kindOfDataArray);
 		}
 
 		return doc;
