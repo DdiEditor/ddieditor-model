@@ -26,6 +26,7 @@ import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.CoverageTypeImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.NameDocumentImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.UniverseReferenceDocumentImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.AbstractDocument;
+import org.ddialliance.ddi3.xml.xmlbeans.studyunit.KindOfDataDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.KindOfDataType;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.PurposeDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.StudyUnitDocument;
@@ -1047,6 +1048,13 @@ public class StudyUnit extends Model {
 	public CoverageDocument getCoverage() {
 		if (coverageSubElements.getXmlObjects().length > 0) {
 			return (CoverageDocumentImpl) coverageSubElements.getXmlObjects()[0];
+		}
+		return null;
+	}
+
+	public KindOfDataDocument getKindOfData() {
+		if (kindOfDataSubElements.getXmlObjects().length > 0) {
+			return (KindOfDataDocumentImpl) kindOfDataSubElements.getXmlObjects()[0];
 		}
 		return null;
 	}
