@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Ddieditor Model
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Name: DdiEditor Model
 Bundle-SymbolicName: ddieditor-model
 Bundle-Version: 0.1.0
 Bundle-Activator: dk.dda.ddieditor.model.Activator
