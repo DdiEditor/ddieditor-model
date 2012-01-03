@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DdiEditor Model
 Bundle-SymbolicName: ddieditor-model
 Bundle-Version: 0.1.0
-Bundle-ClassPath: ddieditor-model,
+Bundle-ClassPath: .,
  bin/
 Bundle-Activator: dk.dda.ddieditor.model.Activator
 Bundle-Vendor: Danish Data Archive
