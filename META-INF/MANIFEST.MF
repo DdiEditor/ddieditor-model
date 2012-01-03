@@ -1,16 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Name: DdiEditor Model
 Bundle-SymbolicName: ddieditor-model
 Bundle-Version: 0.1.0
+Bundle-ClassPath: ddieditor-model,
+ bin/
 Bundle-Activator: dk.dda.ddieditor.model.Activator
 Bundle-Vendor: Danish Data Archive
-Require-Bundle: util;bundle-version="0.18.0",
- ddieditor;bundle-version="0.17.0",
- org.eclipse.core.runtime,
- lib-java;bundle-version="0.10.0"
-Bundle-ActivationPolicy: lazy
 Export-Package: dk.dda.ddieditor.model,
  org.ddialliance.ddieditor.ui.dbxml;uses:="org.ddialliance.ddieditor.model.lightxmlobject,org.ddialliance.ddieditor.ui.model",
  org.ddialliance.ddieditor.ui.dbxml.category;
@@ -98,3 +94,9 @@ Export-Package: dk.dda.ddieditor.model,
    org.ddialliance.ddieditor.persistenceaccess.maintainablelabel,
    org.ddialliance.ddi3.xml.xmlbeans.reusable,
    org.ddialliance.ddieditor.ui.model"
+Require-Bundle: org.eclipse.core.runtime,
+ lib-java;bundle-version="0.10.0",
+ util;bundle-version="0.18.0",
+ ddieditor;bundle-version="0.17.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
