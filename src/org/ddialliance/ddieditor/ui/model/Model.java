@@ -149,6 +149,10 @@ public abstract class Model implements IModel {
 		this.create = create;
 	}
 	
+	public boolean isCreate() {
+		return create;
+	}
+
 	/**
 	 * Set Original Language
 	 * 
