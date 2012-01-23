@@ -2,6 +2,8 @@ package org.ddialliance.ddieditor.ui.dbxml.category;
 
 import java.util.List;
 
+import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.CategorySchemeDocument;
+import org.ddialliance.ddieditor.logic.urn.ddi.ReferenceResolution;
 import org.ddialliance.ddieditor.model.DdiManager;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
 import org.ddialliance.ddieditor.persistenceaccess.maintainablelabel.MaintainableLabelQueryResult;
@@ -36,11 +38,9 @@ public class CategorySchemeDao implements IDao {
 		if (model.getParentId() == null) {
 			List<LightXmlObjectType> logpList;
 			try {
-				logpList = DdiManager
-				.getInstance()
-				.getLogicalProductsLight(null, null, null, null)
-				.getLightXmlObjectList()
-				.getLightXmlObjectList();
+				logpList = DdiManager.getInstance()
+						.getLogicalProductsLight(null, null, null, null)
+						.getLightXmlObjectList().getLightXmlObjectList();
 			} catch (Exception e) {
 				throw new DDIFtpException(e.getMessage());
 			}
@@ -73,9 +73,9 @@ public class CategorySchemeDao implements IDao {
 			String version, String parentId, String parentVersion)
 			throws Exception {
 		List<LightXmlObjectType> lightXmlObjectTypeList = DdiManager
-				.getInstance().getCategorySchemesLight(id, version, parentId,
-						parentVersion).getLightXmlObjectList()
-				.getLightXmlObjectList();
+				.getInstance()
+				.getCategorySchemesLight(id, version, parentId, parentVersion)
+				.getLightXmlObjectList().getLightXmlObjectList();
 
 		return lightXmlObjectTypeList;
 	}
@@ -90,6 +90,29 @@ public class CategorySchemeDao implements IDao {
 		return new CategoryScheme(id, version, parentId, parentVersion,
 				maintainableLabelQueryResult.getAgency(),
 				maintainableLabelQueryResult);
+	}
+
+	/**
+	 * Get category scheme by reference
+	 * 
+	 * @param reference resolution
+	 * @return category scheme document
+	 * @throws Exception
+	 */
+	public static CategorySchemeDocument getCodeSchemeByReference(
+			ReferenceResolution refRes) throws Exception {
+		List<LightXmlObjectType> catSchemesLight = DdiManager.getInstance()
+				.getCategorySchemesLight(null, null, null, null)
+				.getLightXmlObjectList().getLightXmlObjectList();
+		for (LightXmlObjectType lightXmlObject : catSchemesLight) {
+			if (lightXmlObject.getId().equals(refRes.getId())) {
+				return DdiManager.getInstance().getCategoryScheme(
+						lightXmlObject.getId(), lightXmlObject.getVersion(),
+						lightXmlObject.getParentId(),
+						lightXmlObject.getParentVersion());
+			}
+		}
+		return null;
 	}
 
 	@Override
