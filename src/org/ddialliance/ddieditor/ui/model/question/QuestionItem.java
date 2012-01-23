@@ -47,11 +47,6 @@ public class QuestionItem extends Model {
 	private QuestionItemDocument doc;
 	private String originalLanguageCode = null;
 
-	// Note: RESPONSE_TYPES is used as index in RESPONSE_TYPE_LABELS
-	public enum RESPONSE_TYPES {
-		UNDEFINED, CODE, TEXT, NUMERIC, DATE, CATEGORY, GEOGRAPHIC
-	}
-
 	/**
 	 * Constructor
 	 * 
@@ -89,7 +84,6 @@ public class QuestionItem extends Model {
 		if (conceptReferenceList.size() == 1) {
 			conceptRef = XmlBeansUtil
 					.getTextOnMixedElement(conceptReferenceList.get(0));
-			log.debug("ConceptRef: " + conceptRef);
 		} else if (conceptReferenceList.size() > 1) {
 			throw new Exception(
 					Translator
@@ -116,7 +110,6 @@ public class QuestionItem extends Model {
 	 * @throws Exception
 	 */
 	public void setConceptRef(String conceptRef) throws Exception {
-
 		if (doc.getQuestionItem().getConceptReferenceList().size() > 1) {
 			throw new Exception(
 					Translator
@@ -138,7 +131,6 @@ public class QuestionItem extends Model {
 	 */
 	public List<DynamicTextType> getQuestionText() throws DDIFtpException {
 		if (doc.getQuestionItem().getQuestionTextList().isEmpty() && create) {
-
 			DynamicTextType dynamicText = doc.getQuestionItem()
 					.addNewQuestionText();
 			TextType textType = dynamicText.addNewText();
@@ -168,7 +160,6 @@ public class QuestionItem extends Model {
 	 * @return RepresentationType
 	 */
 	public RepresentationType setCodeResponseDomain(String codeSchemeReference) {
-
 		if (doc.getQuestionItem().getResponseDomain() != null) {
 			doc.getQuestionItem().unsetResponseDomain();
 		}
@@ -188,7 +179,6 @@ public class QuestionItem extends Model {
 	 * @return RepresentationType
 	 */
 	public RepresentationType setTextResponseDomain(BigInteger maxLength) {
-
 		if (doc.getQuestionItem().getResponseDomain() != null) {
 			doc.getQuestionItem().unsetResponseDomain();
 		}
@@ -240,44 +230,44 @@ public class QuestionItem extends Model {
 	 * @param value
 	 * @return RepresentationType or null - if unsupported response type
 	 */
-	public RepresentationType setResponseDomain(RESPONSE_TYPES responseType,
+	public RepresentationType setResponseDomain(ResponseType responseType,
 			String value) {
 
 		if (doc.getQuestionItem().getResponseDomain() != null) {
 			doc.getQuestionItem().unsetResponseDomain();
 		}
 		RepresentationType rt = doc.getQuestionItem().addNewResponseDomain();
-		if (responseType == RESPONSE_TYPES.UNDEFINED) {
+		if (responseType == ResponseType.UNDEFINED) {
 			return rt;
-		} else if (responseType == RESPONSE_TYPES.CODE) {
+		} else if (responseType == ResponseType.CODE) {
 			CodeDomainType cdt = (CodeDomainType) rt.substitute(
 					CodeDomainDocument.type.getDocumentElementName(),
 					CodeDomainType.type);
 			cdt.addNewCodeSchemeReference().addNewID().setStringValue(value);
 			return cdt;
-		} else if (responseType == RESPONSE_TYPES.TEXT) {
+		} else if (responseType == ResponseType.TEXT) {
 			TextDomainType tdt = (TextDomainType) rt.substitute(
 					TextDomainDocument.type.getDocumentElementName(),
 					TextDomainType.type);
 			// TODO Support MaxLength:
 			// tdt.setMaxLength(arg0);
 			return tdt;
-		} else if (responseType == RESPONSE_TYPES.NUMERIC) {
+		} else if (responseType == ResponseType.NUMERIC) {
 			NumericDomainType ndt = (NumericDomainType) rt.substitute(
 					NumericDomainDocument.type.getDocumentElementName(),
 					NumericDomainType.type);
 			ndt.setType(null);
 			return ndt;
-		} else if (responseType == RESPONSE_TYPES.DATE) {
+		} else if (responseType == ResponseType.DATE) {
 			DateTimeDomainType type = (DateTimeDomainType) rt.substitute(
 					DateTimeDomainDocument.type.getDocumentElementName(),
 					DateTimeDomainType.type);
 			type.setType(null);
 			return type;
-		} else if (responseType == RESPONSE_TYPES.CATEGORY) {
+		} else if (responseType == ResponseType.CATEGORY) {
 			// TODO Support Category
 			return null;
-		} else if (responseType == RESPONSE_TYPES.GEOGRAPHIC) {
+		} else if (responseType == ResponseType.GEOGRAPHIC) {
 			// TODO Support Geographic
 			return null;
 		} else {
@@ -363,8 +353,7 @@ public class QuestionItem extends Model {
 				}
 			} else {
 				DynamicTextType questionText = (DynamicTextType) XmlBeansUtil
-						.getLangElement(getDisplayLanguage(),
-								getQuestionText());
+						.getLangElement(getDisplayLanguage(), getQuestionText());
 				LiteralTextType lTextType = (LiteralTextType) questionText
 						.getTextList()
 						.get(0)
