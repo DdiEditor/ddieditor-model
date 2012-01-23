@@ -15,6 +15,7 @@ import java.util.List;
 import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.CodeSchemeDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.CodeSchemeType;
 import org.ddialliance.ddieditor.logic.identification.IdentificationManager;
+import org.ddialliance.ddieditor.logic.urn.ddi.ReferenceResolution;
 import org.ddialliance.ddieditor.model.DdiManager;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
 import org.ddialliance.ddieditor.ui.dbxml.IDao;
@@ -61,6 +62,29 @@ public class CodeSchemeDao implements IDao {
 				.getCodeScheme();
 	}
 
+	/**
+	 * Get code scheme by reference
+	 * 
+	 * @param refRes
+	 * @return code scheme document
+	 * @throws Exception
+	 */
+	public static CodeSchemeDocument getCodeSchemeByReference(
+			ReferenceResolution refRes) throws Exception {
+		List<LightXmlObjectType> codeSchemeRefList = DdiManager.getInstance()
+				.getCodeSchemesLight(null, null, null, null)
+				.getLightXmlObjectList().getLightXmlObjectList();
+		for (LightXmlObjectType lightXmlObject : codeSchemeRefList) {
+			if (lightXmlObject.getId().equals(refRes.getId())) {
+				return DdiManager.getInstance().getCodeScheme(
+						lightXmlObject.getId(), lightXmlObject.getVersion(),
+						lightXmlObject.getParentId(),
+						lightXmlObject.getParentVersion());
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public void delete(String id, String version, String parentId,
 			String parentVersion) throws Exception {
@@ -73,11 +97,14 @@ public class CodeSchemeDao implements IDao {
 	@Override
 	public IModel create(String id, String version, String parentId,
 			String parentVersion) throws Exception {
-		
+
 		CodeSchemeDocument doc = CodeSchemeDocument.Factory.newInstance();
 		IdentificationManager.getInstance().addIdentification(
-				doc.addNewCodeScheme(),	ElementType.getElementType("CategoryScheme").getIdPrefix(), null);
-		IdentificationManager.getInstance().addVersionInformation(doc.getCodeScheme(), null, null);
+				doc.addNewCodeScheme(),
+				ElementType.getElementType("CategoryScheme").getIdPrefix(),
+				null);
+		IdentificationManager.getInstance().addVersionInformation(
+				doc.getCodeScheme(), null, null);
 		CodeScheme model = new CodeScheme(doc, parentId, parentVersion);
 		return model;
 	}
@@ -101,31 +128,33 @@ public class CodeSchemeDao implements IDao {
 			String version, String parentId, String parentVersion)
 			throws Exception {
 		List<LightXmlObjectType> lightXmlObjectTypeList = DdiManager
-				.getInstance().getCodeSchemesLight(id, version, parentId,
-						parentVersion).getLightXmlObjectList()
-				.getLightXmlObjectList();
+				.getInstance()
+				.getCodeSchemesLight(id, version, parentId, parentVersion)
+				.getLightXmlObjectList().getLightXmlObjectList();
 		return lightXmlObjectTypeList;
 	}
 
 	@Override
-	public IModel getModel(String id, String version, String parentId, String parentVersion) throws Exception {
-		CodeSchemeDocument doc = DdiManager.getInstance().getCodeScheme(id, version, parentId, parentVersion);
-		return doc == null ? null : new CodeScheme(doc, parentId, parentVersion);
+	public IModel getModel(String id, String version, String parentId,
+			String parentVersion) throws Exception {
+		CodeSchemeDocument doc = DdiManager.getInstance().getCodeScheme(id,
+				version, parentId, parentVersion);
+		return doc == null ? null
+				: new CodeScheme(doc, parentId, parentVersion);
 	}
 
 	@Override
 	public void update(IModel model) throws DDIFtpException {
 		try {
 			// TODO Version Control - not supported
-			DdiManager.getInstance().updateElement(model.getDocument(), model.getId(), model.getVersion());
+			DdiManager.getInstance().updateElement(model.getDocument(),
+					model.getId(), model.getVersion());
 		} catch (DDIFtpException e) {
 			log.error("Update Code Scheme error: " + e.getMessage());
 
 			throw new DDIFtpException(e.getMessage());
 		}
 
-		
-		
-//		DaoSchemeHelper.update(model);
+		// DaoSchemeHelper.update(model);
 	}
 }
