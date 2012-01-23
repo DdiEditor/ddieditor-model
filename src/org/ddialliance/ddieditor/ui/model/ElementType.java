@@ -86,12 +86,6 @@ public enum ElementType {
 	// data collection
 	DATA_COLLECTION("datacollection__DataCollection", null, null, "daco",
 			"DataCollection.label", "", null),
-			
-	// methodology
-	METHODOLOGY("methodology", null, null, "method", "", "", null),
-	
-	// datacollectionmethodology
-	DATA_COLLECTION_METHODOLOGY("datacollectionmethodology", null, null, "dcmethod", "", "", null),
 
 	// question
 	QUESTION_ITEM("QuestionItem", getID("QuestionsPerspective.ID"),
