@@ -34,17 +34,19 @@ import org.ddialliance.ddiftp.util.log.LogType;
  */
 public enum ElementType {
 	// application
-	FILE("", getID("InfoPerspective.ID"), getID("FileEditor.ID"), "", "ddi3file.label", "", null), MAINTAINABLE_LIGHTLABEL(
-			"", "", "", "", "", "", null),
+	FILE("", getID("InfoPerspective.ID"), getID("FileEditor.ID"), "",
+			"ddi3file.label", "", null), MAINTAINABLE_LIGHTLABEL("", "", "",
+			"", "", "", null),
 	// note
 	NOTE("Note", null, null, "note", "Note.label", "", null),
 
 	// study unit
-	CONCEPTUAL_STUDY_UNIT("studyunit__StudyUnit", "", getID("StudyUnitEditor.ID"), "",
+	CONCEPTUAL_STUDY_UNIT("studyunit__StudyUnit", "",
+			getID("StudyUnitEditor.ID"), "",
 			"InfoView.label.studyUnitLabel.StudyUnit", "OPEN", null), STUDY_UNIT(
 			"studyunit__StudyUnit", "", getID("StudyUnitEditor.ID"), "stdu",
 			"InfoView.label.studyUnitLabel.StudyUnit", "OPEN", null),
-			
+
 	// abstract
 	ABSTRACT("Abstract", null, null, "abst", "", "", null),
 
@@ -61,81 +63,100 @@ public enum ElementType {
 	TEMPORAL_COVERAGE("TemporalCoverage", null, null, "tmpcov", "", "", null),
 
 	// universe
-	UNIVERSE("Universe", getID("UniversePerspective.ID"), getID("UniverseEditor.ID"), "univ",
-			"UniverseView.label.universeLabel.Universe", "", null), 
-	UNIVERSE_SCHEME("UniverseScheme", getID("UniversePerspective.ID"), getID("UniverseSchemeEditor.ID"),
-			"unis", "UniverseView.label.universeSchemeLabel.UniverseScheme",
-			"", Arrays.asList(ElementType.UNIVERSE)),
-	
+	UNIVERSE("Universe", getID("UniversePerspective.ID"),
+			getID("UniverseEditor.ID"), "univ",
+			"UniverseView.label.universeLabel.Universe", "", null), UNIVERSE_SCHEME(
+			"UniverseScheme", getID("UniversePerspective.ID"),
+			getID("UniverseSchemeEditor.ID"), "unis",
+			"UniverseView.label.universeSchemeLabel.UniverseScheme", "", Arrays
+					.asList(ElementType.UNIVERSE)),
+
 	// geographic
-	GEOGRAPHICSTRUCTURESCHEME("GeographicStructureScheme", null, null, "geostrs", "", "", null),
-	GEOGRAPHICSTRUCTURE("GeographicStructure", null, null, "geostr", "", "", null),
-	GEOGRAPHY("Geography", null, null, "geo", "", "", null),
+	GEOGRAPHICSTRUCTURESCHEME("GeographicStructureScheme", null, null,
+			"geostrs", "", "", null), GEOGRAPHICSTRUCTURE(
+			"GeographicStructure", null, null, "geostr", "", "", null), GEOGRAPHY(
+			"Geography", null, null, "geo", "", "", null),
 
 	// conceptual component
 	CONCEPTUAL_COMPONENT("ConceptualComponent", null, null, "coco",
 			"ConceptualComponent.label", "", null),
 
 	// concept
-	CONCEPT("Concept", getID("ConceptsPerspective.ID"), getID("ConceptEditor.ID"), "conc",
+	CONCEPT("Concept", getID("ConceptsPerspective.ID"),
+			getID("ConceptEditor.ID"), "conc",
 			"ConceptView.label.conceptLabel.Concept", "", null), CONCEPT_SCHEME(
-			"ConceptScheme", getID("ConceptsPerspective.ID"), getID("ConceptSchemeEditor.ID"),
-			"cons", "ConceptView.label.conceptSchemeLabel.ConceptScheme", "",
-			Arrays.asList(ElementType.CONCEPT)),
+			"ConceptScheme", getID("ConceptsPerspective.ID"),
+			getID("ConceptSchemeEditor.ID"), "cons",
+			"ConceptView.label.conceptSchemeLabel.ConceptScheme", "", Arrays
+					.asList(ElementType.CONCEPT)),
 
 	// data collection
 	DATA_COLLECTION("datacollection__DataCollection", null, null, "daco",
 			"DataCollection.label", "", null),
+	// methodology
+	METHODOLOGY("methodology", null, null, "method", "", "", null),
+
+	// datacollectionmethodology
+	DATA_COLLECTION_METHODOLOGY("datacollectionmethodology", null, null,
+			"dcmethod", "", "", null),
 
 	// question
 	QUESTION_ITEM("QuestionItem", getID("QuestionsPerspective.ID"),
 			getID("QuestionItemEditor.ID"), "quei",
 			"QuestionItemView.label.questionItemLabel.QuestionItem", "", null), SUB_QUESTION_ITEM(
-			"QuestionItem", getID("QuestionsPerspective.ID"), getID("QuestionItemEditor.ID"),
-			"quei", "QuestionItemView.label.questionItemLabel.SubQuestionItem",
-			"", null), MULTIPLE_QUESTION_ITEM(
+			"QuestionItem", getID("QuestionsPerspective.ID"),
+			getID("QuestionItemEditor.ID"), "quei",
+			"QuestionItemView.label.questionItemLabel.SubQuestionItem", "",
+			null), MULTIPLE_QUESTION_ITEM(
 			"MultipleQuestionItem",
 			getID("QuestionsPerspective.ID"),
 			getID("MultipleQuestionItemEditor.ID"),
 			"mquei",
 			"QuestionItemView.label.multipleQuestionItemLabel.MultipleQuestionItem",
 			"", Arrays.asList(ElementType.SUB_QUESTION_ITEM)), QUESTION_SCHEME(
-			"QuestionScheme", getID("QuestionsPerspective.ID"), getID("QuestionSchemeEditor.ID"),
-			"ques",
+			"QuestionScheme", getID("QuestionsPerspective.ID"),
+			getID("QuestionSchemeEditor.ID"), "ques",
 			"QuestionItemView.label.questionSchemeLabel.QuesitionScheme", "",
 			Arrays.asList(ElementType.MULTIPLE_QUESTION_ITEM,
 					ElementType.QUESTION_ITEM)),
 
 	// category
-	CATEGORY("Category", getID("CategoryPerspective.ID"), getID("CategoryEditor.ID"), "cat",
+	CATEGORY("Category", getID("CategoryPerspective.ID"),
+			getID("CategoryEditor.ID"), "cat",
 			"CategoryView.label.categoryLabel.Category", "", null), CATEGORY_SCHEME(
-			"CategoryScheme", getID("CategoryPerspective.ID"), getID("CategorySchemeEditor.ID"),
-			"cats", "CategoryView.label.categorySchemeLabel.CategoryScheme",
-			"", Arrays.asList(ElementType.CATEGORY)),
+			"CategoryScheme", getID("CategoryPerspective.ID"),
+			getID("CategorySchemeEditor.ID"), "cats",
+			"CategoryView.label.categorySchemeLabel.CategoryScheme", "", Arrays
+					.asList(ElementType.CATEGORY)),
 
 	// instrument
-	INSTRUMENT("Instrument", getID("InstrumentPerspective.ID"), getID("InstrumentEditor.ID"),
-			"inst", "InstrumentItemView.label.instrumentItemLabel.Instrument",
-			"", null), QUESTION_CONSTRUCT("QuestionConstruct",
-					getID("InstrumentPerspective.ID"), getID("QuestionConstructEditor.ID"), "quec",
+	INSTRUMENT("Instrument", getID("InstrumentPerspective.ID"),
+			getID("InstrumentEditor.ID"), "inst",
+			"InstrumentItemView.label.instrumentItemLabel.Instrument", "", null), QUESTION_CONSTRUCT(
+			"QuestionConstruct", getID("InstrumentPerspective.ID"),
+			getID("QuestionConstructEditor.ID"), "quec",
 			"InstrumentView.QuestionConstruct.label", "", null), STATEMENT_ITEM(
-			"StatementItem", getID("InstrumentPerspective.ID"), getID("StatementItemEditor.ID"),
-			"stai", "InstrumentView.StatementItem.label", "", null), IF_THEN_ELSE(
-			"IfThenElse", getID("InstrumentPerspective.ID"), getID("IfThenElseEditor.ID"),
-			"ifth", "InstrumentView.IfThenElse.label", "", null), REPEAT_UNTIL(
-			"RepeatUntil", getID("InstrumentPerspective.ID"), getID("RepeatUntilEditor.ID"),
-			"repu", "InstrumentView.RepeatUntil.label", "", null), LOOP("Loop",
-					getID("InstrumentPerspective.ID"), getID("LoopEditor.ID"), "loop",
+			"StatementItem", getID("InstrumentPerspective.ID"),
+			getID("StatementItemEditor.ID"), "stai",
+			"InstrumentView.StatementItem.label", "", null), IF_THEN_ELSE(
+			"IfThenElse", getID("InstrumentPerspective.ID"),
+			getID("IfThenElseEditor.ID"), "ifth",
+			"InstrumentView.IfThenElse.label", "", null), REPEAT_UNTIL(
+			"RepeatUntil", getID("InstrumentPerspective.ID"),
+			getID("RepeatUntilEditor.ID"), "repu",
+			"InstrumentView.RepeatUntil.label", "", null), LOOP("Loop",
+			getID("InstrumentPerspective.ID"), getID("LoopEditor.ID"), "loop",
 			"InstrumentView.Loop.label", "", null), REPEAT_WHILE("RepeatWhile",
-					getID("InstrumentPerspective.ID"), getID("RepeatWhileEditor.ID"), "repw",
-			"InstrumentView.RepeatWhile.label", "", null), SEQUENCE("Sequence",
-					getID("InstrumentPerspective.ID"), getID("SequenceEditor.ID"), "seqc",
+			getID("InstrumentPerspective.ID"), getID("RepeatWhileEditor.ID"),
+			"repw", "InstrumentView.RepeatWhile.label", "", null), SEQUENCE(
+			"Sequence", getID("InstrumentPerspective.ID"),
+			getID("SequenceEditor.ID"), "seqc",
 			"InstrumentView.Sequence.label", "", null), COMPUTATION_ITEM(
 			"ComputationItem", getID("InstrumentPerspective.ID"),
-					getID("ComputationItemEditor.ID"), "copi",
+			getID("ComputationItemEditor.ID"), "copi",
 			"InstrumentView.ComputationItem.label", "", null), CONTROL_CONSTRUCT_SCHEME(
 			"ControlConstructScheme", getID("InstrumentPerspective.ID"),
-					getID("ControlConstructSchemeEditor.ID"), "cocs",
+			getID("ControlConstructSchemeEditor.ID"), "cocs",
 			"InstrumentView.ControlConstructScheme.label", "", Arrays.asList(
 					ElementType.QUESTION_CONSTRUCT, ElementType.STATEMENT_ITEM,
 					ElementType.IF_THEN_ELSE, ElementType.REPEAT_UNTIL,
@@ -149,14 +170,16 @@ public enum ElementType {
 			"", null),
 
 	// code
-	CODE_SCHEME("CodeScheme", getID("CodesPerspective.ID"), getID("CodeSchemeEditor.ID"), "cods",
+	CODE_SCHEME("CodeScheme", getID("CodesPerspective.ID"),
+			getID("CodeSchemeEditor.ID"), "cods",
 			"codeView.label.codeSchemeLabel.CodeScheme", "", null),
 
 	// variable
-	VARIABLE("Variable", getID("VariablePerspective.ID"), getID("VariableEditor.ID"), "vari",
-			"Variable", "", null), VARIABLE_SCHEME("VariableScheme",
-			getID("VariablePerspective.ID"), getID("VariableSchemeEditor.ID"), "vars",
-			"VariableScheme", "", Arrays.asList(ElementType.VARIABLE)),
+	VARIABLE("Variable", getID("VariablePerspective.ID"),
+			getID("VariableEditor.ID"), "vari", "Variable", "", null), VARIABLE_SCHEME(
+			"VariableScheme", getID("VariablePerspective.ID"),
+			getID("VariableSchemeEditor.ID"), "vars", "VariableScheme", "",
+			Arrays.asList(ElementType.VARIABLE)),
 
 	// physical data product
 	PHYSICAL_DATA_PRODUCT("PhysicalDataProduct", null, null, "phdp",
@@ -183,12 +206,11 @@ public enum ElementType {
 
 	// reusable
 	SOFTWARE("Software", null, null, "sofw", "Software.label", "", null);
-	
+
 	private static Log log = LogFactory.getLog(LogType.EXCEPTION,
-	        ElementType.class);
+			ElementType.class);
 
 	private static Map idCache = null;
-
 
 	private String elementName;
 	private String perspectiveId;
@@ -227,7 +249,7 @@ public enum ElementType {
 		this.withOpen = withOpen;
 		this.subElements = subElements;
 	}
-	
+
 	private static String getID(String key) {
 		if (idCache == null) {
 			idCache = new HashMap();
@@ -239,14 +261,18 @@ public enum ElementType {
 			File file = new File("resources" + File.separator
 					+ "model-editor-id.properties");
 			try {
-				FileInputStream fileInputStream = new FileInputStream(file); 
+				FileInputStream fileInputStream = new FileInputStream(file);
 				properties.load(fileInputStream);
 				fileInputStream.close();
 			} catch (FileNotFoundException e) {
-				System.out.println("'model-editor-id.properties' file not found: "+e.getMessage());
+				System.out
+						.println("'model-editor-id.properties' file not found: "
+								+ e.getMessage());
 				return null;
 			} catch (IOException e) {
-				System.out.println("IO error reading 'model-editor-id.properties' file: "+e.getMessage());
+				System.out
+						.println("IO error reading 'model-editor-id.properties' file: "
+								+ e.getMessage());
 				return null;
 			}
 
