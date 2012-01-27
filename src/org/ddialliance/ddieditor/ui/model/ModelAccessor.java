@@ -12,7 +12,7 @@ import org.ddialliance.ddiftp.util.ReflectionUtil;
 import org.ddialliance.ddiftp.util.xml.XmlBeansUtil;
 
 public class ModelAccessor {
-	
+
 	public static ReferenceType setReference(ReferenceType reference,
 			LightXmlObjectType refered) {
 		IDType id = null;
@@ -29,9 +29,9 @@ public class ModelAccessor {
 		return reference;
 
 	}
-	
-	public static ReferenceType setReference(List<?> refList, ReferenceType reference,
-			LightXmlObjectType refered) {
+
+	public static ReferenceType setReference(List<?> refList,
+			ReferenceType reference, LightXmlObjectType refered) {
 		if (refered != null && refered.getId().equals("")) {
 			if (!refList.isEmpty()) {
 				refList.remove(0);
@@ -41,7 +41,18 @@ public class ModelAccessor {
 		return setReference(reference, refered);
 	}
 
+	static String quei = "QuestionItem";
+
 	public static LightXmlObjectListDocument resolveReference(
+			ReferenceType reference, String localName) throws DDIFtpException {
+		if (localName.equals(quei)) {
+			return resolveQuestionItem(reference);
+		} else {
+			return resolveReferenceImpl(reference, localName);
+		}
+	}
+
+	private static LightXmlObjectListDocument resolveReferenceImpl(
 			ReferenceType reference, String localName) throws DDIFtpException {
 		StringBuilder operation = new StringBuilder("get");
 		operation.append(localName);
@@ -50,13 +61,29 @@ public class ModelAccessor {
 		LightXmlObjectListDocument lightXmlObjectList = null;
 		try {
 			lightXmlObjectList = (LightXmlObjectListDocument) ReflectionUtil
-					.invokeMethod(DdiManager.getInstance(), operation
-							.toString(), false, new Object[] {
-							XmlBeansUtil.getTextOnMixedElement(reference.getIDArray(0)), "", "",
-							"" });
+					.invokeMethod(
+							DdiManager.getInstance(),
+							operation.toString(),
+							false,
+							new Object[] {
+									XmlBeansUtil
+											.getTextOnMixedElement(reference
+													.getIDArray(0)), "", "", "" });
 		} catch (Exception e) {
 			throw new DDIFtpException(e);
 		}
 		return lightXmlObjectList;
+	}
+
+	private static LightXmlObjectListDocument resolveQuestionItem(
+			ReferenceType reference) throws DDIFtpException {
+		LightXmlObjectListDocument queiDoc = resolveReferenceImpl(reference, quei);
+		LightXmlObjectListDocument mqueDoc = resolveReferenceImpl(reference,
+				"MultipleQuestionQuestionItem");
+
+		queiDoc.getLightXmlObjectList()
+				.getLightXmlObjectList()
+				.addAll(mqueDoc.getLightXmlObjectList().getLightXmlObjectList());
+		return queiDoc;
 	}
 }
