@@ -205,7 +205,11 @@ public enum ElementType {
 			"DataFileIdentification.label", "", null),
 
 	// reusable
-	SOFTWARE("Software", null, null, "sofw", "Software.label", "", null);
+	SOFTWARE("Software", null, null, "sofw", "Software.label", "", null),
+	
+	// archive
+	INDIVIDUAL("Individual", null, null, "indi",
+			"Individual.label", "", null);
 
 	private static Log log = LogFactory.getLog(LogType.EXCEPTION,
 			ElementType.class);

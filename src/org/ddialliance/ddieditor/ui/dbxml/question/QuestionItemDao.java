@@ -209,9 +209,18 @@ public class QuestionItemDao implements IDao {
 						"MultipleQuestionItem", "SubQuestions",
 						"getMultipleQuestionItemsLight");
 			} else {
+				// stored at specific location
 				DdiManager.getInstance().createElement(
 						questionItem.getDocument(), questionItem.getParentId(),
-						questionItem.getParentVersion(), "QuestionScheme");
+						questionItem.getParentVersion(),
+						"QuestionScheme",
+						// parent sub-elements
+						new String[] { "VersionResponsibility",
+								"VersionRationale", "Label", "Description" },
+						// stop elements
+						new String[] {},
+						// jump elements
+						new String[] { "QuestionItem" });
 			}
 		} catch (DDIFtpException e) {
 			log.error("Create DBXML Question Item error: " + e.getMessage());

@@ -16,7 +16,8 @@ import org.ddialliance.ddiftp.util.xml.XmlBeansUtil;
  * Label and description model - provides 'get' and 'set' methods for accessing
  * Labels and Descriptions sub-elements
  */
-public abstract class LabelDescription extends Model implements IModel, ILabelDescription {
+public abstract class LabelDescription extends Model implements IModel,
+		ILabelDescription {
 	private static Log log = LogFactory.getLog(LogType.SYSTEM,
 			LabelDescription.class);
 
@@ -75,7 +76,8 @@ public abstract class LabelDescription extends Model implements IModel, ILabelDe
 		// Show label in Display language
 		if (labels.size() > 0) {
 			try {
-				label = (XmlObject) XmlBeansUtil.getLangElement(getDisplayLanguage(), labels);
+				label = (XmlObject) XmlBeansUtil.getLangElement(
+						getDisplayLanguage(), labels);
 			} catch (DDIFtpException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -142,7 +144,8 @@ public abstract class LabelDescription extends Model implements IModel, ILabelDe
 		// Show Description in Display language
 		if (descrs.size() > 0) {
 			try {
-				descr = (XmlObject) XmlBeansUtil.getLangElement(getDisplayLanguage(), descrs);
+				descr = (XmlObject) XmlBeansUtil.getLangElement(
+						getDisplayLanguage(), descrs);
 			} catch (DDIFtpException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -174,7 +177,6 @@ public abstract class LabelDescription extends Model implements IModel, ILabelDe
 
 		// Create new Description - in Original language:
 		StructuredStringType descriptionType = (StructuredStringType) descr;
-		descriptionType = LabelDocument.Factory.newInstance().addNewLabel();
 		descriptionType.setTranslated(false);
 		descriptionType.setTranslatable(true);
 		try {

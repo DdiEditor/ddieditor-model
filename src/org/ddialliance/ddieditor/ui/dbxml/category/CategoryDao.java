@@ -38,12 +38,12 @@ public class CategoryDao implements IDao {
 				"CategoryScheme",
 				// parentSubElements - elements of parent
 				new String[] { "VersionRationale", "VersionResponsibility",
-						"Label", "Description",
-						"CategorySchemeReference", "CategoryGroup" },
+						"Label", "Description", "CategorySchemeReference",
+						"CategoryGroup" },
 				// stopElements - do not search below ...
 				new String[] { },
 				// jumpElements - jump over elements
-				new String[] { "Category", });
+				new String[] { "Category" });
 	}
 
 	@Override

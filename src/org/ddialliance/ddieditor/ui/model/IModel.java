@@ -78,4 +78,9 @@ public interface IModel {
 	 * 
 	 */
 	public void setDisplayLanguage(String language);
+	/**
+	 * Set Original Language
+	 * 
+	 */
+	public void setOriginalLanguage(String language);
 }

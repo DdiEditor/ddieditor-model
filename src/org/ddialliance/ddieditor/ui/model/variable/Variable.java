@@ -3,10 +3,12 @@ package org.ddialliance.ddieditor.ui.model.variable;
 import java.math.BigInteger;
 import java.util.List;
 
+import org.apache.log4j.varia.ExternallyRolledFileAppender;
 import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.CodeRepresentationType;
 import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.VariableDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.DateTimeRepresentationType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.DateTypeCodeType;
+import org.ddialliance.ddi3.xml.xmlbeans.reusable.ExternalCategoryRepresentationType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.NameType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.NumericRepresentationType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.NumericTypeCodeType;
@@ -121,14 +123,24 @@ public class Variable extends Model {
 	}
 
 	// missing value
-	public List getMissingValue() {
-		if (!(getValueRepresentation() instanceof NumericRepresentationType)) {
-			log.warn("Not setting NumericRepresentation.type as ValueRepresentation is of type: "
-					+ getValueRepresentation().getClass().getName());
-			return null;
+	public List getMissingValue() {		
+		if (getValueRepresentation() instanceof CodeRepresentationType) {
+			return ((CodeRepresentationType) getValueRepresentation())
+					.getMissingValue();
+		} if ((getValueRepresentation() instanceof NumericRepresentationType)) {
+			return ((NumericRepresentationType) getValueRepresentation())
+					.getMissingValue();
+		} if ((getValueRepresentation() instanceof TextRepresentationType)) {
+			return ((TextRepresentationType) getValueRepresentation())
+					.getMissingValue();
+		}  if ((getValueRepresentation() instanceof DateTimeRepresentationType)) {
+			return ((DateTimeRepresentationType) getValueRepresentation())
+					.getMissingValue();
+		}  if ((getValueRepresentation() instanceof ExternalCategoryRepresentationType)) {
+			return ((ExternalCategoryRepresentationType) getValueRepresentation())
+					.getMissingValue();
 		}
-		return ((NumericRepresentationType) getValueRepresentation())
-				.getMissingValue();
+		return null;
 	}
 
 	// numeric rep

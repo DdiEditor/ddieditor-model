@@ -56,8 +56,18 @@ public class VariableDao implements IDao {
 
 	@Override
 	public void create(IModel model) throws DDIFtpException {
-		DdiManager.getInstance().createElement(model.getDocument(), model.getParentId(), model.getParentVersion(),
-				"VariableScheme");
+		// stored at specific location
+		DdiManager.getInstance().createElement(model.getDocument(),
+				model.getParentId(),
+				model.getParentVersion(),
+				"VariableScheme",
+				// parent sub-elements
+				new String[] { "VersionResponsibility", "VersionRationale",
+						"Label", "Description" },
+				// stop elements
+				new String[] { },
+				// jump elements
+				new String[] { "Variable" });
 	}
 
 	@Override

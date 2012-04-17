@@ -182,10 +182,19 @@ public class ConceptDao implements IDao {
 
 	@Override
 	public void create(IModel model) throws DDIFtpException {
-		DdiManager.getInstance().createElement(model.getDocument(),
+		// stored at specific location
+		DdiManager.getInstance().createElement(
+				model.getDocument(),
 				model.getParentId(),
 				model.getParentVersion(),
-				"ConceptScheme");
+				"ConceptScheme",
+				// parent sub-elements
+				new String[] { "VersionResponsibility", "VersionRationale",
+						"Label", "Description" },
+				// stop elements
+				new String[] {},
+				// jump elements
+				new String[] { "Concept" });
 	}
 
 	@Override

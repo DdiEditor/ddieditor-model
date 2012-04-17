@@ -116,7 +116,7 @@ public class StudyUnit extends Model {
 	}
 
 	@Override
-	public XmlObject getDocument() throws DDIFtpException {
+	public StudyUnitDocument getDocument() throws DDIFtpException {
 		StudyUnitDocument doc = StudyUnitDocument.Factory.newInstance();
 		StudyUnitType type = doc.addNewStudyUnit();
 		type.setId(maintainableLabelQueryResult.getId());

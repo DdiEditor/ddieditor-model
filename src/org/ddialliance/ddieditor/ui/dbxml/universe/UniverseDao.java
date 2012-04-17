@@ -106,8 +106,18 @@ public class UniverseDao implements IDao {
 	 * @throws DDIFtpException
 	 */
 	public void create(IModel model) throws DDIFtpException {
-		DdiManager.getInstance().createElement(model.getDocument(), model.getParentId(), model.getParentVersion(),
-				"UniverseScheme");
+		// stored at specific location
+		DdiManager.getInstance().createElement(model.getDocument(),
+				model.getParentId(),
+				model.getParentVersion(),
+				"UniverseScheme",
+				// parent sub-elements
+				new String[] { "VersionResponsibility", "VersionRationale",
+						"Label", "Description" },
+				// stop elements
+				new String[] {},
+				// jump elements
+				new String[] { "Universe" });
 	}
 
 	/**
