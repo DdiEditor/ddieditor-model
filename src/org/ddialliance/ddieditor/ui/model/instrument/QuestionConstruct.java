@@ -86,7 +86,7 @@ public class QuestionConstruct extends Model {
 		}
 		for (int i = 0; i < ResponceUnit.values().length; i++) {
 			if (ResponceUnit.values()[i].label.equals(result.getStringValue())) {
-				return i+1;
+				return i + 1;
 			}
 		}
 		return 0;
@@ -116,20 +116,21 @@ public class QuestionConstruct extends Model {
 			if (((LightXmlObjectType) value).getId().equals("")) {
 				doc.getQuestionConstruct().getQuestionReference().removeID(0);
 			} else {
-				ModelAccessor.setReference(getQuestionReference(), (LightXmlObjectType) value);
+				ModelAccessor.setReference(getQuestionReference(),
+						(LightXmlObjectType) value);
 			}
 		}
 
 		// InternationalStringType
 		if (type.equals(InternationalStringType.class)) {
-			int count = (Integer) value-1;
-			if (count<1) {
-				if (getResponseUnit()!=null) {
+			int count = (Integer) value - 1;
+			if (count < 1) {
+				if (getResponseUnit() != null) {
 					doc.getQuestionConstruct().removeResponseUnit(0);
 				}
 				return;
 			}
-			String result = ResponceUnit.values()[(Integer) value-1].label;
+			String result = ResponceUnit.values()[(Integer) value - 1].label;
 			getResponseUnit().setStringValue(result);
 		}
 
@@ -138,16 +139,19 @@ public class QuestionConstruct extends Model {
 			log.warn("AlternateSequenceType, not implemented");
 
 			int defined = (Integer) value;
-			if (defined == -1 || defined == 0) {
+			if (doc.getQuestionConstruct().getResponseSequence() != null
+					&& (defined == -1 || defined == 0)) {
 				// remove ResponseSequence
-				doc.getQuestionConstruct().getDomNode().removeChild(
-						doc.getQuestionConstruct().getResponseSequence()
-								.getDomNode());
-			} else {
-				ItemSequenceTypeType.Enum itemSequenceType = ItemSequenceTypeType.Enum
-						.forInt(defined);
-				getResponseSequence().setItemSequenceType(itemSequenceType);
+				doc.getQuestionConstruct()
+						.getDomNode()
+						.removeChild(
+								doc.getQuestionConstruct()
+										.getResponseSequence().getDomNode());
+				return;
 			}
+			ItemSequenceTypeType.Enum itemSequenceType = ItemSequenceTypeType.Enum
+					.forInt(defined);
+			getResponseSequence().setItemSequenceType(itemSequenceType);
 		}
 	}
 

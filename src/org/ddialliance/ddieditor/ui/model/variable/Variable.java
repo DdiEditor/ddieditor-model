@@ -3,8 +3,11 @@ package org.ddialliance.ddieditor.ui.model.variable;
 import java.math.BigInteger;
 import java.util.List;
 
-import org.apache.log4j.varia.ExternallyRolledFileAppender;
+import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.CodeRepresentationDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.CodeRepresentationType;
+import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.DateTimeRepresentationDocument;
+import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.NumericRepresentationDocument;
+import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.TextRepresentationDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.VariableDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.DateTimeRepresentationType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.DateTypeCodeType;
@@ -122,21 +125,84 @@ public class Variable extends Model {
 		return reference;
 	}
 
+	public RepresentationType setRepresentation(ResponseType responseType,
+			String value) {
+
+		if (doc.getVariable().getRepresentation() != null) {
+			doc.getVariable().unsetRepresentation();
+		}
+		org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.RepresentationType lrt = doc
+				.getVariable().addNewRepresentation();
+		RepresentationType rt = lrt.addNewValueRepresentation();
+
+		if (responseType == ResponseType.UNDEFINED) {
+			return lrt.getValueRepresentation();
+		}
+
+		// code rep
+		else if (responseType == ResponseType.CODE) {
+			CodeRepresentationType crt  = (CodeRepresentationType) rt.substitute(
+						CodeRepresentationDocument.type
+								.getDocumentElementName(),
+						CodeRepresentationType.type);
+			crt.addNewCodeSchemeReference().addNewID().setStringValue(value);
+			return crt;
+		}
+		// text rep
+		else if (responseType == ResponseType.TEXT) {
+			TextRepresentationType trt = (TextRepresentationType) rt.substitute(
+						TextRepresentationDocument.type
+								.getDocumentElementName(),
+						TextRepresentationType.type);
+			return trt;
+		}
+		// numeric rep
+		else if (responseType == ResponseType.NUMERIC) {
+			NumericRepresentationType nrt = (NumericRepresentationType) rt.substitute(
+					NumericRepresentationDocument.type.getDocumentElementName(),
+					NumericRepresentationType.type);
+			nrt.setType(null);
+			return nrt;
+		// date time rep
+		} else if (responseType == ResponseType.DATE) {
+			DateTimeRepresentationType drt = (DateTimeRepresentationType) rt.substitute(
+					DateTimeRepresentationDocument.type.getDocumentElementName(),
+					DateTimeRepresentationType.type);
+			drt.setType(null);
+			return drt;
+		// category rep
+		} else if (responseType == ResponseType.CATEGORY) {
+			// TODO Support Category
+			return null;
+		// geographic rep
+		} else if (responseType == ResponseType.GEOGRAPHIC) {
+			// TODO Support Geographic
+			return null;
+		} else {
+			// TODO Error handling
+			return null;
+		}
+	}
+
 	// missing value
-	public List getMissingValue() {		
+	public List getMissingValue() {
 		if (getValueRepresentation() instanceof CodeRepresentationType) {
 			return ((CodeRepresentationType) getValueRepresentation())
 					.getMissingValue();
-		} if ((getValueRepresentation() instanceof NumericRepresentationType)) {
+		}
+		if ((getValueRepresentation() instanceof NumericRepresentationType)) {
 			return ((NumericRepresentationType) getValueRepresentation())
 					.getMissingValue();
-		} if ((getValueRepresentation() instanceof TextRepresentationType)) {
+		}
+		if ((getValueRepresentation() instanceof TextRepresentationType)) {
 			return ((TextRepresentationType) getValueRepresentation())
 					.getMissingValue();
-		}  if ((getValueRepresentation() instanceof DateTimeRepresentationType)) {
+		}
+		if ((getValueRepresentation() instanceof DateTimeRepresentationType)) {
 			return ((DateTimeRepresentationType) getValueRepresentation())
 					.getMissingValue();
-		}  if ((getValueRepresentation() instanceof ExternalCategoryRepresentationType)) {
+		}
+		if ((getValueRepresentation() instanceof ExternalCategoryRepresentationType)) {
 			return ((ExternalCategoryRepresentationType) getValueRepresentation())
 					.getMissingValue();
 		}
@@ -284,8 +350,10 @@ public class Variable extends Model {
 				return;
 			}
 			if (bigIntIsZero((BigInteger) value)) {
-				((TextRepresentationType) getValueRepresentation())
-						.unsetMinLength();
+				TextRepresentationType text = ((TextRepresentationType) getValueRepresentation());
+				if (text.getMinLength() != null) {
+					text.unsetMinLength();
+				}
 				return;
 			}
 			((TextRepresentationType) getValueRepresentation())
@@ -300,8 +368,10 @@ public class Variable extends Model {
 				return;
 			}
 			if ("".equals(((String) value))) {
-				((TextRepresentationType) getValueRepresentation())
-						.unsetRegExp();
+				TextRepresentationType text = ((TextRepresentationType) getValueRepresentation());
+				if (text.getRegExp() != null) {
+					text.unsetRegExp();
+				}
 				return;
 			}
 			((TextRepresentationType) getValueRepresentation())
@@ -316,8 +386,11 @@ public class Variable extends Model {
 				return;
 			}
 			if (bigIntIsZero((BigInteger) value)) {
-				((TextRepresentationType) getValueRepresentation())
-						.unsetMaxLength();
+				TextRepresentationType text = ((TextRepresentationType) getValueRepresentation());
+				if (text.getMaxLength() != null) {
+					text.unsetMaxLength();
+				}
+
 				return;
 			}
 			((TextRepresentationType) getValueRepresentation())
@@ -354,15 +427,9 @@ public class Variable extends Model {
 					.setType(dateTime);
 		}
 
-		// numeric rep
-		// - missing values
+		// missing values
 		if (type.equals(ModelIdentifingType.Type_L.class)) {
-			if (!(getValueRepresentation() instanceof NumericRepresentationType)) {
-				log.warn("Not setting NumericRepresentation.type as ValueRepresentation is of type: "
-						+ getValueRepresentation().getClass().getName());
-				return;
-			}
-			((NumericRepresentationType) getValueRepresentation())
+			((RepresentationType) getValueRepresentation())
 					.setMissingValue((List) value);
 		}
 	}

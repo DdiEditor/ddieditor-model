@@ -6,6 +6,7 @@ import java.util.List;
 import org.ddialliance.ddi3.xml.xmlbeans.datacollection.ConditionalTextDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.datacollection.ConditionalTextType;
 import org.ddialliance.ddi3.xml.xmlbeans.datacollection.DynamicTextType;
+import org.ddialliance.ddi3.xml.xmlbeans.datacollection.LiteralTextDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.datacollection.LiteralTextType;
 import org.ddialliance.ddi3.xml.xmlbeans.datacollection.StatementItemDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.datacollection.TextType;
@@ -118,10 +119,11 @@ public class StatementItem extends Model {
 			}
 		}
 		if (text == null && create) {
-			LiteralTextType literalText = LiteralTextType.Factory.newInstance();
-			text = literalText.addNewText();
-			doc.getStatementItem().getDisplayTextList().get(0).getTextList()
-					.add(literalText);
+			TextType textType = dynamicText.addNewText();
+			LiteralTextType lTextType = (LiteralTextType) textType.substitute(
+					LiteralTextDocument.type.getDocumentElementName(),
+					LiteralTextType.type);
+			text = lTextType.addNewText();
 		}
 		return text;
 	}
@@ -134,10 +136,10 @@ public class StatementItem extends Model {
 			}
 		}
 		if (condition == null && create) {
-			condition = ConditionalTextDocument.Factory.newInstance()
-					.addNewConditionalText();
-			doc.getStatementItem().getDisplayTextList().get(0).getTextList()
-					.add(condition);
+			TextType textType = dynamicText.addNewText();
+			condition = (ConditionalTextType) textType.substitute(
+					ConditionalTextDocument.type.getDocumentElementName(),
+					ConditionalTextType.type);
 		}
 		return condition;
 	}

@@ -1,15 +1,6 @@
 package org.ddialliance.ddieditor.ui.dbxml.code;
 
-/**
- * Code Schemes (DBXML).
- * 
- */
-/*
- * $Author: ddadak $ 
- * $Date: 2011-01-28 11:42:26 +0100 (fre, 28 jan 2011) $ 
- * $Revision: 2176 $
- */
-
+import java.util.ArrayList;
 import java.util.List;
 
 import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.CodeSchemeDocument;
@@ -18,6 +9,9 @@ import org.ddialliance.ddieditor.logic.identification.IdentificationManager;
 import org.ddialliance.ddieditor.logic.urn.ddi.ReferenceResolution;
 import org.ddialliance.ddieditor.model.DdiManager;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
+import org.ddialliance.ddieditor.model.resource.DDIResourceType;
+import org.ddialliance.ddieditor.persistenceaccess.PersistenceManager;
+import org.ddialliance.ddieditor.ui.dbxml.DaoHelper;
 import org.ddialliance.ddieditor.ui.dbxml.IDao;
 import org.ddialliance.ddieditor.ui.model.ElementType;
 import org.ddialliance.ddieditor.ui.model.IModel;
@@ -27,6 +21,9 @@ import org.ddialliance.ddiftp.util.log.Log;
 import org.ddialliance.ddiftp.util.log.LogFactory;
 import org.ddialliance.ddiftp.util.log.LogType;
 
+/**
+ * Code Scheme Dao
+ */
 public class CodeSchemeDao implements IDao {
 	private static Log log = LogFactory.getLog(LogType.SYSTEM,
 			CodeSchemeDao.class);
@@ -46,6 +43,48 @@ public class CodeSchemeDao implements IDao {
 				.getInstance().getCodeSchemesLight(id, version, null, null)
 				.getLightXmlObjectList().getLightXmlObjectList();
 		return lightXmlObjectTypeList;
+	}
+
+	public static List<LightXmlObjectType> getAllCodeSchemesLight(String id,
+			String version) throws Exception {
+		List<DDIResourceType> resources = PersistenceManager.getInstance()
+				.getResources();
+		String workingresource = PersistenceManager.getInstance()
+				.getWorkingResource();
+
+		List<LightXmlObjectType> lightXmlObjectTypeList = new ArrayList<LightXmlObjectType>();
+		for (DDIResourceType resource : resources) {
+			PersistenceManager.getInstance().setWorkingResource(
+					resource.getOrgName());
+			lightXmlObjectTypeList.addAll(DdiManager.getInstance()
+					.getCodeSchemesLight(id, version, null, null)
+					.getLightXmlObjectList().getLightXmlObjectList());
+		}
+
+		PersistenceManager.getInstance().setWorkingResource(workingresource);
+		return lightXmlObjectTypeList;
+	}
+
+	public static CodeSchemeDocument getAllCodeSchemeByReference(
+			ReferenceResolution refRes) throws Exception {
+		CodeSchemeDocument result = null;
+
+		List<DDIResourceType> resources = PersistenceManager.getInstance()
+				.getResources();
+		String workingresource = PersistenceManager.getInstance()
+				.getWorkingResource();
+
+		for (DDIResourceType resource : resources) {
+			PersistenceManager.getInstance().setWorkingResource(
+					resource.getOrgName());
+			result = getCodeSchemeByReference(refRes);
+			if (result != null) {
+				break;
+			}
+		}
+
+		PersistenceManager.getInstance().setWorkingResource(workingresource);
+		return result;
 	}
 
 	/**
@@ -74,15 +113,17 @@ public class CodeSchemeDao implements IDao {
 		List<LightXmlObjectType> codeSchemeRefList = DdiManager.getInstance()
 				.getCodeSchemesLight(null, null, null, null)
 				.getLightXmlObjectList().getLightXmlObjectList();
+		CodeSchemeDocument result = null;
 		for (LightXmlObjectType lightXmlObject : codeSchemeRefList) {
 			if (lightXmlObject.getId().equals(refRes.getId())) {
-				return DdiManager.getInstance().getCodeScheme(
+				result = DdiManager.getInstance().getCodeScheme(
 						lightXmlObject.getId(), lightXmlObject.getVersion(),
 						lightXmlObject.getParentId(),
 						lightXmlObject.getParentVersion());
+				break;
 			}
 		}
-		return null;
+		return result;
 	}
 
 	@Override
@@ -91,7 +132,7 @@ public class CodeSchemeDao implements IDao {
 		IModel model = getModel(id, version, parentId, parentVersion);
 		DdiManager.getInstance().deleteElement(model.getDocument(),
 				model.getParentId(), model.getParentVersion(),
-				"logicalproduct__LogicalProduct");
+				DaoHelper.defineParent("logicalproduct__LogicalProduct"));
 	}
 
 	@Override
@@ -100,8 +141,7 @@ public class CodeSchemeDao implements IDao {
 
 		CodeSchemeDocument doc = CodeSchemeDocument.Factory.newInstance();
 		IdentificationManager.getInstance().addIdentification(
-				doc.addNewCodeScheme(),
-				ElementType.getElementType("CategoryScheme").getIdPrefix(),
+				doc.addNewCodeScheme(), ElementType.CODE_SCHEME.getIdPrefix(),
 				null);
 		IdentificationManager.getInstance().addVersionInformation(
 				doc.getCodeScheme(), null, null);
@@ -111,9 +151,26 @@ public class CodeSchemeDao implements IDao {
 
 	@Override
 	public void create(IModel model) throws DDIFtpException {
-		DdiManager.getInstance().createElement(model.getDocument(),
-				model.getParentId(), model.getParentVersion(),
-				"logicalproduct__LogicalProduct");
+		DdiManager
+				.getInstance()
+				.createElement(
+						model.getDocument(),
+						model.getParentId(),
+						model.getParentVersion(),
+						DaoHelper
+								.defineParent("logicalproduct__LogicalProduct"),
+						// parentSubElements - elements of parent
+						new String[] { "VersionRationale",
+								"VersionResponsibility", "LogicalProductName",
+								"Label", "Description", "Coverage", "Citation",
+								"group__Abstract", "group__Purpose" },
+						// stopElements - do not search below ...
+						new String[] { "VariableScheme",
+								"VariableSchemeReference" },
+						// jumpElements - jump over elements
+						new String[] { "DataRelationship", "OtherMaterial",
+								"Note", "CategoryScheme", "CodeScheme",
+								"logicalproduct__CodeSchemeReference" });
 	}
 
 	@Override

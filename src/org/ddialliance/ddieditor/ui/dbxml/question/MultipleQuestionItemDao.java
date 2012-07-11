@@ -176,9 +176,6 @@ public class MultipleQuestionItemDao implements IDao {
 					multipleQuestionItem.getParentId(),
 					multipleQuestionItem.getParentVersion(), "QuestionScheme");
 		} catch (DDIFtpException e) {
-			log.error("Create DBXML Multiple Question Item error: "
-					+ e.getMessage());
-
 			throw new DDIFtpException(e.getMessage());
 		}
 	}
@@ -249,9 +246,6 @@ public class MultipleQuestionItemDao implements IDao {
 	 * @throws DDIFtpException
 	 */
 	public void update(IModel multiplequestionItem) throws DDIFtpException {
-		log.debug("Update DBXML Multiple Question Item:\n"
-				+ multiplequestionItem.getDocument());
-
 		// Remove all Multiple QuestionTexts
 		cleanQuestionTexts(multiplequestionItem.getId(),
 				multiplequestionItem.getVersion(),
@@ -352,8 +346,6 @@ public class MultipleQuestionItemDao implements IDao {
 		DdiManager.getInstance().updateMaintainableLabel(
 				maintainableLabelQueryResult,
 				maintainableLabelUpdateElementList);
-
-		// multiplequestionItem.clearChanged();
 	}
 
 	/**
@@ -372,7 +364,6 @@ public class MultipleQuestionItemDao implements IDao {
 	 */
 	public void delete(String id, String version, String parentId,
 			String parentVersion) throws Exception {
-		log.debug("Delete DBXML MultipleQuestion Item");
 		MultipleQuestionItem multipleQuestionItem = getModel(id, version,
 				parentId, parentVersion);
 		try {
@@ -381,8 +372,6 @@ public class MultipleQuestionItemDao implements IDao {
 					multipleQuestionItem.getParentId(),
 					multipleQuestionItem.getParentVersion(), "QuestionScheme");
 		} catch (DDIFtpException e) {
-			log.error("Delete DBXML Question Item error: " + e.getMessage());
-
 			throw new DDIFtpException(e.getMessage());
 		}
 

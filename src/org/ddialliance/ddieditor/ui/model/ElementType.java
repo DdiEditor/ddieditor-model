@@ -47,6 +47,9 @@ public enum ElementType {
 			"studyunit__StudyUnit", "", getID("StudyUnitEditor.ID"), "stdu",
 			"InfoView.label.studyUnitLabel.StudyUnit", "OPEN", null),
 
+	// resource package
+	RESOURCE_PACKAGE("ResourcePackage", null, null, "resp", "", "", null),
+
 	// abstract
 	ABSTRACT("Abstract", null, null, "abst", "", "", null),
 
@@ -96,7 +99,7 @@ public enum ElementType {
 	// methodology
 	METHODOLOGY("methodology", null, null, "method", "", "", null),
 
-	// datacollectionmethodology
+	// data collection methodology
 	DATA_COLLECTION_METHODOLOGY("datacollectionmethodology", null, null,
 			"dcmethod", "", "", null),
 
@@ -130,10 +133,7 @@ public enum ElementType {
 					.asList(ElementType.CATEGORY)),
 
 	// instrument
-	INSTRUMENT("Instrument", getID("InstrumentPerspective.ID"),
-			getID("InstrumentEditor.ID"), "inst",
-			"InstrumentItemView.label.instrumentItemLabel.Instrument", "", null), QUESTION_CONSTRUCT(
-			"QuestionConstruct", getID("InstrumentPerspective.ID"),
+	QUESTION_CONSTRUCT("QuestionConstruct", getID("InstrumentPerspective.ID"),
 			getID("QuestionConstructEditor.ID"), "quec",
 			"InstrumentView.QuestionConstruct.label", "", null), STATEMENT_ITEM(
 			"StatementItem", getID("InstrumentPerspective.ID"),
@@ -161,16 +161,25 @@ public enum ElementType {
 					ElementType.QUESTION_CONSTRUCT, ElementType.STATEMENT_ITEM,
 					ElementType.IF_THEN_ELSE, ElementType.REPEAT_UNTIL,
 					ElementType.LOOP, ElementType.REPEAT_WHILE,
-					ElementType.SEQUENCE, ElementType.COMPUTATION_ITEM)),
+					ElementType.SEQUENCE, ElementType.COMPUTATION_ITEM)), INSTRUMENT(
+			"Instrument", getID("InstrumentPerspective.ID"),
+			getID("InstrumentEditor.ID"), "inst",
+			"InstrumentItemView.label.instrumentItemLabel.Instrument", "", null), INSTRUCTION(
+			"InterviewerInstruction", null, null, "intv",
+			"InterviewerInstruction.label", "", null), INTERVIEWER_INSTRUCTION_SCHEME(
+			"InterviewerInstructionScheme", getID("InstrumentPerspective.ID"),
+			getID("InstrumentPerspective.ID"), "invs", "InterviewerInstructionScheme", "",
+			Arrays.asList(ElementType.INSTRUCTION)),
 
 	// logical product
-	LOGICAL_PRODUCT("LogicalProduct", null, null, "lopr",
+	LOGICAL_PRODUCT("logicalproduct__LogicalProduct", null, null, "lopr",
 			"LogicalProduct.label", "", null), DATA_RELATIONSHIP(
 			"DataRelationship", null, null, "dars", "DataRelationship.label",
 			"", null),
 
 	// code
-	CODE_SCHEME("CodeScheme", getID("CodesPerspective.ID"),
+	CODE("Code", null, null, "code", "Code.label", "", null), CODE_SCHEME(
+			"CodeScheme", getID("CodesPerspective.ID"),
 			getID("CodeSchemeEditor.ID"), "cods",
 			"codeView.label.codeSchemeLabel.CodeScheme", "", null),
 
@@ -206,10 +215,9 @@ public enum ElementType {
 
 	// reusable
 	SOFTWARE("Software", null, null, "sofw", "Software.label", "", null),
-	
+
 	// archive
-	INDIVIDUAL("Individual", null, null, "indi",
-			"Individual.label", "", null);
+	INDIVIDUAL("Individual", null, null, "indi", "Individual.label", "", null);
 
 	private static Log log = LogFactory.getLog(LogType.EXCEPTION,
 			ElementType.class);
@@ -383,20 +391,23 @@ public enum ElementType {
 			ConceptualType conceptualType) throws DDIFtpException {
 		if (conceptualType.equals(ConceptualType.STUDY)) {
 			return ElementType.STUDY_UNIT;
-		} else if (conceptualType.equals(ConceptualType.LOGIC_Universe)) {
+		} else if (conceptualType.equals(ConceptualType.LOGIC_UNIVERSE)) {
 			return ElementType.UNIVERSE_SCHEME;
-		} else if (conceptualType.equals(ConceptualType.LOGIC_concepts)) {
+		} else if (conceptualType.equals(ConceptualType.LOGIC_CONCEPT)) {
 			return ElementType.CONCEPT_SCHEME;
-		} else if (conceptualType.equals(ConceptualType.LOGIC_category)) {
+		} else if (conceptualType.equals(ConceptualType.LOGIC_CATEGORY)) {
 			return ElementType.CATEGORY_SCHEME;
-		} else if (conceptualType.equals(ConceptualType.LOGIC_code)) {
+		} else if (conceptualType.equals(ConceptualType.LOGIC_CODE)) {
 			return ElementType.CODE_SCHEME;
-		} else if (conceptualType.equals(ConceptualType.LOGIC_questions)) {
+		} else if (conceptualType.equals(ConceptualType.LOGIC_QUESTION)) {
 			return ElementType.QUESTION_SCHEME;
-		} else if (conceptualType.equals(ConceptualType.LOGIC_instumentation)) {
+		} else if (conceptualType.equals(ConceptualType.LOGIC_INSTRUMENT)) {
 			return ElementType.INSTRUMENT;
-		} else if (conceptualType.equals(ConceptualType.LOGIC_variable)) {
+		} else if (conceptualType.equals(ConceptualType.LOGIC_VARIABLE)) {
 			return ElementType.VARIABLE_SCHEME;
+		} else if (conceptualType
+				.equals(ConceptualType.LOGIC_CONTROL_CONSTRUCT)) {
+			return ElementType.CONTROL_CONSTRUCT_SCHEME;
 		}
 		// not found
 		throw new DDIFtpException(

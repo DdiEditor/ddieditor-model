@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.apache.xmlbeans.XmlCursor;
 import org.ddialliance.ddi3.xml.xmlbeans.datacollection.QuestionItemDocument;
+import org.ddialliance.ddi3.xml.xmlbeans.datacollection.QuestionItemType;
 import org.ddialliance.ddieditor.logic.identification.IdentificationManager;
 import org.ddialliance.ddieditor.model.DdiManager;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
@@ -125,11 +126,15 @@ public class QuestionItemDao implements IDao {
 		log.debug("QuestionItems.createQuestionItem()");
 
 		QuestionItemDocument doc = QuestionItemDocument.Factory.newInstance();
+		QuestionItemType type = doc.addNewQuestionItem();
+		
 		IdentificationManager.getInstance().addIdentification(
-				doc.addNewQuestionItem(),
-				ElementType.getElementType("QuestionItem").getIdPrefix(), null);
+				doc.getQuestionItem(),
+				ElementType.getElementType(type.getDomNode().getLocalName())
+						.getIdPrefix(), "");
 		IdentificationManager.getInstance().addVersionInformation(
 				doc.getQuestionItem(), null, null);
+
 		QuestionItem model = new QuestionItem(doc, parentId, parentVersion);
 		return model;
 	}

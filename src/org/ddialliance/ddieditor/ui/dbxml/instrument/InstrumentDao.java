@@ -24,9 +24,6 @@ public class InstrumentDao implements IDao {
 	@Override
 	public List<LightXmlObjectType> getLightXmlObject(
 			LightXmlObjectType parentInstrumentScheme) throws Exception {
-
-		log.debug("Instruments.getInstrumentsLight()");
-
 		return getLightXmlObject("", "", parentInstrumentScheme.getId(),
 				parentInstrumentScheme.getVersion());
 	}
@@ -35,9 +32,6 @@ public class InstrumentDao implements IDao {
 	public List<LightXmlObjectType> getLightXmlObject(String id,
 			String version, String parentId, String parentVersion)
 			throws Exception {
-
-		log.debug("Instruments.getInstrumentsLight()");
-
 		List<LightXmlObjectType> lightXmlObjectTypeList = DdiManager
 				.getInstance()
 				.getInstrumentsLight(id, version, parentId, parentVersion)
@@ -66,8 +60,6 @@ public class InstrumentDao implements IDao {
 	@Override
 	public Instrument getModel(String id, String version, String parentId,
 			String parentVersion) throws Exception {
-		log.debug("Instruments.getInstrument(" + id + ")");
-
 		InstrumentDocument doc = DdiManager.getInstance().getInstrument(id,
 				version, parentId, parentVersion);
 		Instrument model = new Instrument(doc, parentId, parentVersion);
@@ -84,12 +76,25 @@ public class InstrumentDao implements IDao {
 			} catch (Exception e) {
 				throw new DDIFtpException(e);
 			}
+			model.setParentId(lightXmlObjectType.getId());
+			model.setParentVersion(lightXmlObjectType.getVersion());
 		}
-		model.setParentId(lightXmlObjectType.getId());
-		model.setParentVersion(lightXmlObjectType.getVersion());
+
 		DdiManager.getInstance().createElement(model.getDocument(),
-				model.getParentId(), model.getParentVersion(),
-				"datacollection__DataCollection");
+				model.getParentId(),
+				model.getParentVersion(),
+				"datacollection__DataCollection",
+				// parent sub-elements
+				new String[] { "UserID", "VersionRationale",
+						"VersionResponsibility", "DataCollectionModuleName",
+						"Label", "Description", "Coverage", "OtherMaterial",
+						"Note", "CollectionEvent" },
+				// stop elements
+				new String[] { "ProcessingEvent" },
+				// jump elements
+				new String[] { "Methodology", "QuestionScheme",
+						"ControlConstructScheme",
+						"InterviewerInstructionScheme", "Instrument" });
 	}
 
 	private LightXmlObjectType createDataCollection() throws Exception {

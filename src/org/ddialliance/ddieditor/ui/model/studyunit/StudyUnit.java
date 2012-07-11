@@ -1,11 +1,11 @@
 package org.ddialliance.ddieditor.ui.model.studyunit;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
-import org.aspectj.weaver.NewConstructorTypeMunger;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.CitationType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.CoverageDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.CoverageType;
@@ -17,12 +17,9 @@ import org.ddialliance.ddi3.xml.xmlbeans.reusable.IdentifiedStructuredStringType
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.InternationalStringType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.ReferenceType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.StructuredStringType;
-import org.ddialliance.ddi3.xml.xmlbeans.reusable.TemporalCoverageType;
-import org.ddialliance.ddi3.xml.xmlbeans.reusable.TopicalCoverageType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.UniverseReferenceDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.CitationDocumentImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.CoverageDocumentImpl;
-import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.CoverageTypeImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.NameDocumentImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.UniverseReferenceDocumentImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.AbstractDocument;
@@ -36,8 +33,10 @@ import org.ddialliance.ddi3.xml.xmlbeans.studyunit.impl.KindOfDataDocumentImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.impl.PurposeDocumentImpl;
 import org.ddialliance.ddieditor.persistenceaccess.maintainablelabel.MaintainableLabelQueryResult;
 import org.ddialliance.ddieditor.persistenceaccess.maintainablelabel.MaintainableLabelUpdateElement;
+import org.ddialliance.ddieditor.ui.model.Language;
 import org.ddialliance.ddieditor.ui.model.Model;
 import org.ddialliance.ddiftp.util.DDIFtpException;
+import org.ddialliance.ddiftp.util.LanguageUtil;
 import org.ddialliance.ddiftp.util.log.Log;
 import org.ddialliance.ddiftp.util.log.LogFactory;
 import org.ddialliance.ddiftp.util.log.LogType;
@@ -196,7 +195,7 @@ public class StudyUnit extends Model {
 				doc.getStudyUnit().setCoverage(coverage);
 			}
 		}
-		
+
 		// kindOfDataSubElements
 		if (kindOfDataSubElements.getXmlObjects().length > 0) {
 			KindOfDataType[] kindOfDataArray = new KindOfDataType[kindOfDataSubElements
@@ -924,23 +923,20 @@ public class StudyUnit extends Model {
 	/**
 	 * Get Study Unit Abstract Content for the given language
 	 * 
-	 * @param languageCode
 	 * @return
+	 * 
+	 * @throws DDIFtpException
 	 */
-	public String getAbstractContent(String languageCode) {
+	public String getAbstractContent() throws DDIFtpException {
 		XmlObject[] abstracts = abstractSubElements.getXmlObjects();
-		if (abstracts != null) {
-			for (int i = 0; i < abstracts.length; i++) {
-				StructuredStringType content = ((AbstractDocumentImpl) abstracts[i])
-						.getAbstract().getContent();
-				String contentString = getStructuredString(content,
-						languageCode);
-				if (contentString.length() > 0) {
-					return contentString;
-				}
-			}
+		AbstractDocumentImpl abstractDoc = (AbstractDocumentImpl) XmlBeansUtil
+				.getDefaultLangElement(Arrays.asList(abstractSubElements
+						.getXmlObjects()));
+		if (abstractDoc == null) {
+			return "";
 		}
-		return "";
+		return XmlBeansUtil.getTextOnMixedElement(abstractDoc.getAbstract()
+				.getContent());
 	}
 
 	/**
@@ -1054,7 +1050,8 @@ public class StudyUnit extends Model {
 
 	public KindOfDataDocument getKindOfData() {
 		if (kindOfDataSubElements.getXmlObjects().length > 0) {
-			return (KindOfDataDocumentImpl) kindOfDataSubElements.getXmlObjects()[0];
+			return (KindOfDataDocumentImpl) kindOfDataSubElements
+					.getXmlObjects()[0];
 		}
 		return null;
 	}

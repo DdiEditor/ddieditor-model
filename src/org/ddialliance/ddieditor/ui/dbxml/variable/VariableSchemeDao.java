@@ -2,11 +2,10 @@ package org.ddialliance.ddieditor.ui.dbxml.variable;
 
 import java.util.List;
 
-import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.VariableSchemeDocument;
 import org.ddialliance.ddieditor.model.DdiManager;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
 import org.ddialliance.ddieditor.persistenceaccess.maintainablelabel.MaintainableLabelQueryResult;
-import org.ddialliance.ddieditor.ui.dbxml.DaoSchemeHelper;
+import org.ddialliance.ddieditor.ui.dbxml.DaoHelper;
 import org.ddialliance.ddieditor.ui.dbxml.IDao;
 import org.ddialliance.ddieditor.ui.model.IModel;
 import org.ddialliance.ddieditor.ui.model.LabelDescriptionScheme;
@@ -56,25 +55,34 @@ public class VariableSchemeDao implements IDao {
 
 	@Override
 	public void create(IModel model) throws DDIFtpException {
-		DdiManager.getInstance()
-				.createElement(model.getDocument(), model.getParentId(),
-						model.getParentVersion(), "logicalproduct__LogicalProduct");
+		DdiManager.getInstance().createElement(model.getDocument(),
+				model.getParentId(),
+				model.getParentVersion(),
+				DaoHelper.defineParent("logicalproduct__LogicalProduct"),
+				// parentSubElements - elements of parent
+				new String[] { "VersionRationale", "VersionResponsibility",
+						"LogicalProductName", "Label", "Description",
+						"Coverage", "Citation", "group__Abstract",
+						"group__Purpose" },
+				// stopElements - do not search below ...
+				new String[] {},
+				// jumpElements - jump over elements
+				new String[] { "DataRelationship", "OtherMaterial", "Note",
+						"CategoryScheme", "CodeScheme", "logicalproduct__CodeSchemeReference",
+						"VariableScheme", "VariableSchemeReference" });
 	}
 
 	@Override
 	public void update(IModel model) throws DDIFtpException {
-		DaoSchemeHelper.update(model);
+		DaoHelper.updateScheme(model);
 	}
 
 	@Override
 	public void delete(String id, String version, String parentId,
 			String parentVersion) throws Exception {
-		// VariableScheme model = getModel(id, version, parentId,
-		// parentVersion);
-		VariableSchemeDocument doc = VariableSchemeDocument.Factory
-				.newInstance();
-		doc.addNewVariableScheme();
-		DdiManager.getInstance().deleteElement(doc, parentId, parentVersion,
-				"logicalproduct__LogicalProduct");
+		VariableScheme model = getModel(id, version, parentId, parentVersion);
+		DdiManager.getInstance().deleteElement(model.getDocument(), parentId,
+				parentVersion,
+				DaoHelper.defineParent("logicalproduct__LogicalProduct"));
 	}
 }

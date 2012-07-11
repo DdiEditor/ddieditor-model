@@ -6,8 +6,10 @@ import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.CategorySchemeDocument;
 import org.ddialliance.ddieditor.logic.urn.ddi.ReferenceResolution;
 import org.ddialliance.ddieditor.model.DdiManager;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
+import org.ddialliance.ddieditor.model.resource.DDIResourceType;
+import org.ddialliance.ddieditor.persistenceaccess.PersistenceManager;
 import org.ddialliance.ddieditor.persistenceaccess.maintainablelabel.MaintainableLabelQueryResult;
-import org.ddialliance.ddieditor.ui.dbxml.DaoSchemeHelper;
+import org.ddialliance.ddieditor.ui.dbxml.DaoHelper;
 import org.ddialliance.ddieditor.ui.dbxml.IDao;
 import org.ddialliance.ddieditor.ui.model.IModel;
 import org.ddialliance.ddieditor.ui.model.LabelDescriptionScheme;
@@ -35,21 +37,21 @@ public class CategorySchemeDao implements IDao {
 
 	@Override
 	public void create(IModel model) throws DDIFtpException {
-		if (model.getParentId() == null) {
-			List<LightXmlObjectType> logpList;
-			try {
-				logpList = DdiManager.getInstance()
-						.getLogicalProductsLight(null, null, null, null)
-						.getLightXmlObjectList().getLightXmlObjectList();
-			} catch (Exception e) {
-				throw new DDIFtpException(e.getMessage());
-			}
-			model.setParentId(logpList.get(0).getId());
-			model.setParentVersion(logpList.get(0).getParentVersion());
-		}
 		DdiManager.getInstance().createElement(model.getDocument(),
-				model.getParentId(), model.getParentVersion(),
-				"logicalproduct__LogicalProduct");
+				model.getParentId(),
+				model.getParentVersion(),
+				DaoHelper.defineParent("logicalproduct__LogicalProduct"),
+				// parentSubElements - elements of parent
+				new String[] { "VersionRationale", "VersionResponsibility",
+						"LogicalProductName", "Label", "Description",
+						"Coverage", "Citation", "group__Abstract",
+						"group__Purpose" },
+				// stopElements - do not search below ...
+				new String[] { "CodeScheme", "logicalproduct__CodeSchemeReference",
+						"VariableScheme", "VariableSchemeReference" },
+				// jumpElements - jump over elements
+				new String[] { "DataRelationship", "OtherMaterial", "Note",
+						"CategoryScheme", });
 	}
 
 	@Override
@@ -58,7 +60,7 @@ public class CategorySchemeDao implements IDao {
 		IModel model = getModel(id, version, parentId, parentVersion);
 		DdiManager.getInstance().deleteElement(model.getDocument(),
 				model.getParentId(), model.getParentVersion(),
-				"logicalproduct__LogicalProduct");
+				DaoHelper.defineParent("logicalproduct__LogicalProduct"));
 	}
 
 	@Override
@@ -95,11 +97,12 @@ public class CategorySchemeDao implements IDao {
 	/**
 	 * Get category scheme by reference
 	 * 
-	 * @param reference resolution
+	 * @param reference
+	 *            resolution
 	 * @return category scheme document
 	 * @throws Exception
 	 */
-	public static CategorySchemeDocument getCodeSchemeByReference(
+	public static CategorySchemeDocument getCategorySchemeByReference(
 			ReferenceResolution refRes) throws Exception {
 		List<LightXmlObjectType> catSchemesLight = DdiManager.getInstance()
 				.getCategorySchemesLight(null, null, null, null)
@@ -115,8 +118,30 @@ public class CategorySchemeDao implements IDao {
 		return null;
 	}
 
+	public static CategorySchemeDocument getAllCategorySchemeByReference(
+			ReferenceResolution refRes) throws Exception {
+		CategorySchemeDocument result = null;
+
+		List<DDIResourceType> resources = PersistenceManager.getInstance()
+				.getResources();
+		String workingresource = PersistenceManager.getInstance()
+				.getWorkingResource();
+
+		for (DDIResourceType resource : resources) {
+			PersistenceManager.getInstance().setWorkingResource(
+					resource.getOrgName());
+			result = getCategorySchemeByReference(refRes);
+			if (result != null) {
+				break;
+			}
+		}
+
+		PersistenceManager.getInstance().setWorkingResource(workingresource);
+		return result;
+	}
+
 	@Override
 	public void update(IModel model) throws DDIFtpException {
-		DaoSchemeHelper.update(model);
+		DaoHelper.updateScheme(model);
 	}
 }

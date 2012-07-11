@@ -25,11 +25,16 @@ import org.ddialliance.ddi3.xml.xmlbeans.datacollection.NumericDomainType;
 import org.ddialliance.ddi3.xml.xmlbeans.datacollection.QuestionItemDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.datacollection.TextDomainDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.datacollection.TextType;
+import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.CodeRepresentationType;
+import org.ddialliance.ddi3.xml.xmlbeans.reusable.DateTimeRepresentationType;
+import org.ddialliance.ddi3.xml.xmlbeans.reusable.DateTypeCodeType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.NameType;
+import org.ddialliance.ddi3.xml.xmlbeans.reusable.NumericRepresentationType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.NumericTypeCodeType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.ReferenceType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.RepresentationType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.TextDomainType;
+import org.ddialliance.ddi3.xml.xmlbeans.reusable.TextRepresentationType;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
 import org.ddialliance.ddieditor.ui.model.Model;
 import org.ddialliance.ddieditor.ui.model.ModelAccessor;
@@ -152,6 +157,86 @@ public class QuestionItem extends Model {
 	public RepresentationType getResponseDomain() {
 		return doc.getQuestionItem().getResponseDomain();
 	}
+	
+	// missing value
+	public List getMissingValue() {		
+		if (getResponseDomain() instanceof CodeDomainType) {
+			return ((CodeDomainType) getResponseDomain())
+					.getMissingValue();
+		} if ((getResponseDomain() instanceof NumericDomainType)) {
+			return ((NumericDomainType) getResponseDomain())
+					.getMissingValue();
+		} if ((getResponseDomain() instanceof TextDomainType)) {
+			return ((TextDomainType) getResponseDomain())
+					.getMissingValue();
+		}  if ((getResponseDomain() instanceof DateTimeDomainType)) {
+			return ((DateTimeDomainType) getResponseDomain())
+					.getMissingValue();
+		}
+		return null;
+	}
+	
+	// numeric rep
+	public BigInteger getNumericDecimalPosition() {
+		if (!(getResponseDomain() instanceof NumericRepresentationType)) {
+			log.warn("Not setting NumericRepresentation.type as ValueRepresentation is of type: "
+					+ getResponseDomain().getClass().getName());
+			return null;
+		}
+		return ((NumericRepresentationType) getResponseDomain())
+				.getDecimalPositions();
+	}
+	
+	// text rep
+	public BigInteger getMaxLength() {
+		if (!(getResponseDomain() instanceof TextRepresentationType)) {
+			log.warn("Not setting TextRepresentation.maxlenght as ValueRepresentation is of type: "
+					+ getResponseDomain().getClass().getName());
+			return null;
+		}
+		return ((TextRepresentationType) getResponseDomain())
+				.getMaxLength();
+	}
+
+	public BigInteger getMinLength() {
+		if (!(getResponseDomain() instanceof TextRepresentationType)) {
+			log.warn("Not setting TextRepresentation.minlength as ValueRepresentation is of type: "
+					+ getResponseDomain().getClass().getName());
+			return null;
+		}
+		return ((TextRepresentationType) getResponseDomain())
+				.getMinLength();
+	}
+	
+	public String getRegx() {
+		if (!(getResponseDomain() instanceof TextRepresentationType)) {
+			log.warn("Not setting TextRepresentation.regx as ValueRepresentation is of type: "
+					+ getResponseDomain().getClass().getName());
+			return null;
+		}
+		return ((TextRepresentationType) getResponseDomain()).getRegExp();
+	}
+	
+	// date time rep
+	public String getFormat() {
+		if (!(getResponseDomain() instanceof DateTimeRepresentationType)) {
+			log.warn("Not setting DateTimeRepresentation.format as ValueRepresentation is of type: "
+					+ getResponseDomain().getClass().getName());
+			return null;
+		}
+		return ((DateTimeRepresentationType) getResponseDomain())
+				.getFormat();
+	}
+
+	public DateTypeCodeType.Enum getDateTimeType() {
+		if (!(getResponseDomain() instanceof DateTimeRepresentationType)) {
+			log.warn("Not setting DateTimeRepresentation.format as ValueRepresentation is of type: "
+					+ getResponseDomain().getClass().getName());
+			return null;
+		}
+		return ((DateTimeRepresentationType) getResponseDomain())
+				.getType();
+	}
 
 	/**
 	 * Set Question Item Code Response Domain
@@ -239,34 +324,39 @@ public class QuestionItem extends Model {
 		RepresentationType rt = doc.getQuestionItem().addNewResponseDomain();
 		if (responseType == ResponseType.UNDEFINED) {
 			return rt;
-		} else if (responseType == ResponseType.CODE) {
+		} 
+		// code domain
+		else if (responseType == ResponseType.CODE) {
 			CodeDomainType cdt = (CodeDomainType) rt.substitute(
 					CodeDomainDocument.type.getDocumentElementName(),
 					CodeDomainType.type);
 			cdt.addNewCodeSchemeReference().addNewID().setStringValue(value);
 			return cdt;
+			// text domain
 		} else if (responseType == ResponseType.TEXT) {
 			TextDomainType tdt = (TextDomainType) rt.substitute(
 					TextDomainDocument.type.getDocumentElementName(),
 					TextDomainType.type);
-			// TODO Support MaxLength:
-			// tdt.setMaxLength(arg0);
 			return tdt;
+			// numeric domain
 		} else if (responseType == ResponseType.NUMERIC) {
 			NumericDomainType ndt = (NumericDomainType) rt.substitute(
 					NumericDomainDocument.type.getDocumentElementName(),
 					NumericDomainType.type);
 			ndt.setType(null);
 			return ndt;
+			// date time domain
 		} else if (responseType == ResponseType.DATE) {
-			DateTimeDomainType type = (DateTimeDomainType) rt.substitute(
+			DateTimeDomainType ddt = (DateTimeDomainType) rt.substitute(
 					DateTimeDomainDocument.type.getDocumentElementName(),
 					DateTimeDomainType.type);
-			type.setType(null);
-			return type;
+			ddt.setType(null);
+			return ddt;
+			// category domain
 		} else if (responseType == ResponseType.CATEGORY) {
 			// TODO Support Category
 			return null;
+			// geographic domain
 		} else if (responseType == ResponseType.GEOGRAPHIC) {
 			// TODO Support Geographic
 			return null;
@@ -340,13 +430,8 @@ public class QuestionItem extends Model {
 
 	@Override
 	public void executeChange(Object value, Class<?> type) throws Exception {
-		// Set Concept reference
-		if (type.equals(ReferenceType.class)) {
-			ReferenceType ref = getConceptReferenceType();
-			ModelAccessor.setReference(doc.getQuestionItem()
-					.getConceptReferenceList(), ref,
-					((LightXmlObjectType) value));
-		} else if (type.equals(ModelIdentifingType.Type_A.class)) {
+		
+		if (type.equals(ModelIdentifingType.Type_A.class)) {
 			if (((String) value).length() == 0) {
 				if (doc.getQuestionItem().getQuestionTextList().size() > 0) {
 					doc.getQuestionItem().removeQuestionText(0);
@@ -365,6 +450,141 @@ public class QuestionItem extends Model {
 						(String) value);
 			}
 		}
+		
+		// code rep
+		// code scheme ref
+		if (type.equals(ModelIdentifingType.Type_D.class)) {
+			ReferenceType ref = getCodeDomainCodeSchemeReference();
+			if (ref == null) {
+				log.warn("Not setting CodeRepresentationCodeSchemeReference as ValueRepresentation is of type: "
+						+ getResponseDomain().getClass().getName());
+				return;
+			}
+			ModelAccessor.setReference(ref, (LightXmlObjectType) value);
+		}
+		
+		// numeric rep
+		// type
+		if (type.equals(ModelIdentifingType.Type_E.class)) {
+			if (!(getResponseDomain() instanceof NumericRepresentationType)) {
+				log.warn("Not setting NumericRepresentation.type as ValueRepresentation is of type: "
+						+ getResponseDomain().getClass().getName());
+				return;
+			}
+			((NumericRepresentationType) getResponseDomain())
+					.setType((NumericTypeCodeType.Enum) value);
+		}
+
+		// dec position
+		if (type.equals(ModelIdentifingType.Type_F.class)) {
+			if (!(getResponseDomain() instanceof NumericRepresentationType)) {
+				log.warn("Not setting NumericRepresentation.type as ValueRepresentation is of type: "
+						+ getResponseDomain().getClass().getName());
+				return;
+			}
+			((NumericRepresentationType) getResponseDomain())
+					.setDecimalPositions((BigInteger) value);
+		}
+
+		// text rep
+		// min lenght
+		if (type.equals(ModelIdentifingType.Type_G.class)) {
+			if (!(getResponseDomain() instanceof TextRepresentationType)) {
+				log.warn("Not setting TextRepresentation.type as ValueRepresentation is of type: "
+						+ getResponseDomain().getClass().getName());
+				return;
+			}
+			if (bigIntIsZero((BigInteger) value)) {
+				TextRepresentationType text = ((TextRepresentationType) getResponseDomain());
+				if (text.getMinLength() != null) {
+					text.unsetMinLength();
+				}
+				return;
+			}
+			((TextRepresentationType) getResponseDomain())
+					.setMinLength((BigInteger) value);
+		}
+		
+		// regx
+		if (type.equals(ModelIdentifingType.Type_H.class)) {
+			if (!(getResponseDomain() instanceof TextRepresentationType)) {
+				log.warn("Not setting TextRepresentation.type as ValueRepresentation is of type: "
+						+ getResponseDomain().getClass().getName());
+				return;
+			}
+			if ("".equals(((String) value))) {
+				TextRepresentationType text = ((TextRepresentationType) getResponseDomain());
+				if (text.getRegExp() != null) {
+					text.unsetRegExp();
+				}
+				return;
+			}
+			((TextRepresentationType) getResponseDomain())
+					.setRegExp((String) value);
+		}
+
+		// max lenght
+		if (type.equals(ModelIdentifingType.Type_I.class)) {
+			if (!(getResponseDomain() instanceof TextRepresentationType)) {
+				log.warn("Not setting TextRepresentation.type as ValueRepresentation is of type: "
+						+ getResponseDomain().getClass().getName());
+				return;
+			}
+			if (bigIntIsZero((BigInteger) value)) {
+				TextRepresentationType text = ((TextRepresentationType) getResponseDomain());
+				if (text.getMaxLength() != null) {
+					text.unsetMaxLength();
+				}
+				return;
+			}
+			((TextRepresentationType) getResponseDomain())
+					.setMaxLength((BigInteger) value);
+		}
+		
+		// date time rep
+		// format
+		if (type.equals(ModelIdentifingType.Type_J.class)) {
+			if (!(getResponseDomain() instanceof DateTimeRepresentationType)) {
+				log.warn("Not setting DateTimeRepresentation.format as ValueRepresentation is of type: "
+						+ getResponseDomain().getClass().getName());
+				return;
+			}
+			if (value == null || "".equals((String) value)) {
+				((DateTimeRepresentationType) getResponseDomain())
+						.unsetFormat();
+				return;
+			}
+			((DateTimeRepresentationType) getResponseDomain())
+					.setFormat((String) value);
+		}
+
+		// type
+		if (type.equals(ModelIdentifingType.Type_K.class)) {
+			if (!(getResponseDomain() instanceof DateTimeRepresentationType)) {
+				log.warn("Not setting DateTimeRepresentation.type as ValueRepresentation is of type: "
+						+ getResponseDomain().getClass().getName());
+				return;
+			}
+			DateTypeCodeType.Enum dateTime = DateTypeCodeType.Enum
+					.forInt((Integer) value);
+			((DateTimeRepresentationType) getResponseDomain())
+					.setType(dateTime);
+		}
+		
+		// missing values
+		if (type.equals(ModelIdentifingType.Type_L.class)) {			
+			((RepresentationType) getResponseDomain())
+					.setMissingValue((List) value);
+		}
+
+		// Set Concept reference
+		if (type.equals(ReferenceType.class)) {
+			ReferenceType ref = getConceptReferenceType();
+			ModelAccessor.setReference(doc.getQuestionItem()
+					.getConceptReferenceList(), ref,
+					((LightXmlObjectType) value));
+		}
+
 		if (type.equals(NameType.class)) {
 			if (((String) value).length() == 0) {
 				if (doc.getQuestionItem().getQuestionItemNameList().size() > 0) {
@@ -380,9 +600,27 @@ public class QuestionItem extends Model {
 					doc.getQuestionItem().getQuestionItemNameList().add(name);
 				}
 			}
-		} else {
-			log.debug("******** Class type not supported: " + type
-					+ " ********");
 		}
 	}
+	
+	private boolean bigIntIsZero(BigInteger bigInt) {
+		return bigInt.intValue() == 0;
+	}
+	
+	// code rep
+	public ReferenceType getCodeDomainCodeSchemeReference() {
+		RepresentationType rep = getResponseDomain();
+		if (!(rep instanceof CodeDomainType)) {
+			return null;
+		}
+
+		ReferenceType reference = ((CodeDomainType) rep)
+				.getCodeSchemeReference();
+		if (create && reference == null) {
+			reference = ((CodeRepresentationType) rep)
+					.addNewCodeSchemeReference();
+		}
+		return reference;
+	}
+
 }

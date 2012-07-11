@@ -5,11 +5,12 @@ import java.util.List;
 import org.ddialliance.ddieditor.model.DdiManager;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
 import org.ddialliance.ddieditor.persistenceaccess.maintainablelabel.MaintainableLabelQueryResult;
-import org.ddialliance.ddieditor.ui.dbxml.DaoSchemeHelper;
+import org.ddialliance.ddieditor.ui.dbxml.DaoHelper;
 import org.ddialliance.ddieditor.ui.dbxml.IDao;
 import org.ddialliance.ddieditor.ui.model.IModel;
 import org.ddialliance.ddieditor.ui.model.LabelDescriptionScheme;
 import org.ddialliance.ddieditor.ui.model.universe.UniverseScheme;
+import org.ddialliance.ddieditor.util.LightXmlObjectUtil;
 import org.ddialliance.ddiftp.util.DDIFtpException;
 import org.ddialliance.ddiftp.util.log.Log;
 import org.ddialliance.ddiftp.util.log.LogFactory;
@@ -33,9 +34,9 @@ public class UniverseSchemeDao implements IDao {
 
 	@Override
 	public void create(IModel model) throws DDIFtpException {
-		DdiManager.getInstance().createElement(model.getDocument(),
-				model.getParentId(), model.getParentVersion(),
-				"ConceptualComponent");
+		DaoHelper.createScheme(model, LightXmlObjectUtil.createLightXmlObject(
+				model.getAgency(), model.getParentId(),
+				model.getParentVersion(), null, null, "ConceptualComponent"));
 	}
 
 	@Override
@@ -44,7 +45,7 @@ public class UniverseSchemeDao implements IDao {
 		IModel model = getModel(id, version, parentId, parentVersion);
 		DdiManager.getInstance().deleteElement(model.getDocument(),
 				model.getParentId(), model.getParentVersion(),
-				"ConceptualComponent");
+				DaoHelper.defineParent("ConceptualComponent"));
 	}
 
 	@Override
@@ -59,9 +60,9 @@ public class UniverseSchemeDao implements IDao {
 			String version, String parentId, String parentVersion)
 			throws Exception {
 		List<LightXmlObjectType> lightXmlObjectTypeList = DdiManager
-				.getInstance().getUniverseSchemesLight(id, version, parentId,
-						parentVersion).getLightXmlObjectList()
-				.getLightXmlObjectList();
+				.getInstance()
+				.getUniverseSchemesLight(id, version, parentId, parentVersion)
+				.getLightXmlObjectList().getLightXmlObjectList();
 
 		return lightXmlObjectTypeList;
 	}
@@ -80,6 +81,6 @@ public class UniverseSchemeDao implements IDao {
 
 	@Override
 	public void update(IModel model) throws DDIFtpException {
-		DaoSchemeHelper.update(model);
+		DaoHelper.updateScheme(model);
 	}
 }

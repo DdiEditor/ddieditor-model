@@ -1,22 +1,13 @@
 package org.ddialliance.ddieditor.ui.model.code;
 
-/**
- * Code Scheme model.
- * 
- */
-/*
- * $Author: ddadak $ 
- * $Date: 2011-07-27 13:14:56 +0200 (ons, 27 jul 2011) $ 
- * $Revision: 2664 $
- */
-
 import java.util.List;
 
-import org.apache.xmlbeans.XmlObject;
 import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.CodeSchemeDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.CodeType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.ReferenceType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.SchemeReferenceType;
+import org.ddialliance.ddieditor.logic.identification.IdentificationManager;
+import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
 import org.ddialliance.ddieditor.ui.model.IModel;
 import org.ddialliance.ddieditor.ui.model.Model;
 import org.ddialliance.ddiftp.util.DDIFtpException;
@@ -25,6 +16,9 @@ import org.ddialliance.ddiftp.util.log.LogFactory;
 import org.ddialliance.ddiftp.util.log.LogType;
 import org.ddialliance.ddiftp.util.xml.XmlBeansUtil;
 
+/**
+ * Code Scheme model
+ */
 public class CodeScheme extends Model implements IModel {
 	private static Log log = LogFactory
 			.getLog(LogType.SYSTEM, CodeScheme.class);
@@ -56,7 +50,7 @@ public class CodeScheme extends Model implements IModel {
 	public SchemeReferenceType getCategorySchemeReference() {
 		return doc.getCodeScheme().getCategorySchemeReference();
 	}
-	
+
 	/**
 	 * Get ID of Default Category Scheme
 	 * 
@@ -78,7 +72,7 @@ public class CodeScheme extends Model implements IModel {
 	 * @param categoryReference
 	 * @param value
 	 */
-	public void addCode(int index, String categoryReference, String value) {
+	public void addCode(int index, String categoryReference, String agency, String value) {
 
 		if (doc.getCodeScheme() == null) {
 			doc.addNewCodeScheme();
@@ -93,18 +87,19 @@ public class CodeScheme extends Model implements IModel {
 		CodeType codeType = CodeType.Factory.newInstance();
 		codeType.addNewCategoryReference().addNewID()
 				.setStringValue(categoryReference);
+		codeType.getCategoryReference().addIdentifyingAgency(agency);
 		codeType.setValue(value);
 		doc.getCodeScheme().getCodeList().add(index, codeType);
 	}
 
-	public void addCode(String categoryReference, String value) {
+	public void addCode(String categoryReference, String agency, String value) {
 		int index = -1;
 		if (doc.getCodeScheme() == null) {
 			index = 0;
 		} else {
 			index = doc.getCodeScheme().getCodeList().size();
 		}
-		addCode(index, categoryReference, value);
+		addCode(index, categoryReference, agency, value);
 	}
 
 	public List<CodeType> getCodes() {
@@ -118,27 +113,25 @@ public class CodeScheme extends Model implements IModel {
 
 	@Override
 	public void executeChange(Object value, Class<?> type) throws Exception {
-		XmlObject xml = (XmlObject) value;
+		// default cats reference
 		if (type.equals(ReferenceType.class)) {
-			SchemeReferenceType ref = doc.getCodeScheme()
-					.getCategorySchemeReference();
-			String id = XmlBeansUtil.getXmlAttributeValue(xml.xmlText(),
-					"id=\"");
-			if (ref == null) {
-				doc.getCodeScheme().addNewCategorySchemeReference().addNewID()
-						.setStringValue(id);
-			} else {
-				if (ref.getIDList().size() == 0) {
-					ref.addNewID();
-				}
-				if (id == null) {
-					// remove ref
+			// remove reference
+			if (value == null || ((LightXmlObjectType) value).getId() == null
+					|| ((LightXmlObjectType) value).getId().equals("")) {
+				if (doc.getCodeScheme().isSetCategorySchemeReference()) {
 					doc.getCodeScheme().unsetCategorySchemeReference();
-				} else {
-					// set ref
-					ref.getIDList().get(0).setStringValue(id);
 				}
+				return;
 			}
+
+			// add reference
+			LightXmlObjectType lightXmlObjectType = (LightXmlObjectType) value;
+			SchemeReferenceType ref = getCategorySchemeReference();
+			if (ref == null) {
+				ref = doc.getCodeScheme().addNewCategorySchemeReference();
+			}
+			IdentificationManager.getInstance().addReferenceInformation(ref,
+					lightXmlObjectType);
 		} else {
 			throw new Exception("type not supported: "
 					+ type.getClass().getName());

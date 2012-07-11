@@ -16,7 +16,7 @@ import org.ddialliance.ddi3.xml.xmlbeans.datacollection.QuestionSchemeType;
 import org.ddialliance.ddieditor.model.DdiManager;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
 import org.ddialliance.ddieditor.persistenceaccess.maintainablelabel.MaintainableLabelQueryResult;
-import org.ddialliance.ddieditor.ui.dbxml.DaoSchemeHelper;
+import org.ddialliance.ddieditor.ui.dbxml.DaoHelper;
 import org.ddialliance.ddieditor.ui.dbxml.IDao;
 import org.ddialliance.ddieditor.ui.model.IModel;
 import org.ddialliance.ddieditor.ui.model.LabelDescriptionScheme;
@@ -47,9 +47,9 @@ public class QuestionSchemeDao implements IDao {
 		log.debug("QuestionSchemes.getLightXmlObject()");
 
 		List<LightXmlObjectType> lightXmlObjectTypeList = DdiManager
-				.getInstance().getQuestionSchemesLight(id, version, parentId,
-						parentVersion).getLightXmlObjectList()
-				.getLightXmlObjectList();
+				.getInstance()
+				.getQuestionSchemesLight(id, version, parentId, parentVersion)
+				.getLightXmlObjectList().getLightXmlObjectList();
 
 		return lightXmlObjectTypeList;
 	}
@@ -85,8 +85,9 @@ public class QuestionSchemeDao implements IDao {
 	public QuestionSchemeType getQuestionSchemeById(String id, String parentId)
 			throws Exception {
 		log.debug("QuestionScheme.getQuestionSchemeById()");
-		return DdiManager.getInstance().getQuestionScheme(id, null, parentId,
-				null).getQuestionScheme();
+		return DdiManager.getInstance()
+				.getQuestionScheme(id, null, parentId, null)
+				.getQuestionScheme();
 	}
 
 	/**
@@ -133,15 +134,22 @@ public class QuestionSchemeDao implements IDao {
 	@Override
 	public void create(IModel questionScheme) throws DDIFtpException {
 		// stored at specific location
-		DdiManager.getInstance().createElement(
-				questionScheme.getDocument(),
+		String parentElement = null;
+		try {
+			parentElement = DaoHelper
+					.defineParent("datacollection__DataCollection");
+		} catch (Exception e) {
+			throw new DDIFtpException(e);
+		}
+
+		DdiManager.getInstance().createElement(questionScheme.getDocument(),
 				questionScheme.getParentId(),
 				questionScheme.getParentVersion(),
-				"datacollection__DataCollection",
+				parentElement,
 				// parent sub-elements
 				new String[] { "VersionResponsibility", "VersionRationale",
-						"DataCollectionModuleName", "Label", "Description", 
-						"Covarage", "OtherMaterial", "Note", "Methodology",   
+						"DataCollectionModuleName", "Label", "Description",
+						"Covarage", "OtherMaterial", "Note", "Methodology",
 						"CollectionEvent", "QuestionScheme",
 						"ControlConstructScheme",
 						"InterviewerInstructionScheme", "Instrument",
@@ -151,12 +159,12 @@ public class QuestionSchemeDao implements IDao {
 						"InterviewerInstructionScheme", "Instrument",
 						"ProcessingEvent" },
 				// jump elements
-				new String[] {"CollectionEvent", "QuestionScheme"});
+				new String[] { "CollectionEvent", "QuestionScheme" });
 	}
 
 	@Override
 	public void update(IModel model) throws DDIFtpException {
-		DaoSchemeHelper.update(model);
+		DaoHelper.updateScheme(model);
 	}
 
 	public void delete(String id, String version, String parentId,
@@ -164,6 +172,6 @@ public class QuestionSchemeDao implements IDao {
 		QuestionScheme model = getModel(id, version, parentId, parentVersion);
 		DdiManager.getInstance().deleteElement(model.getDocument(),
 				model.getParentId(), model.getParentVersion(),
-				"datacollection__DataCollection");
+				DaoHelper.defineParent("datacollection__DataCollection"));
 	}
 }
