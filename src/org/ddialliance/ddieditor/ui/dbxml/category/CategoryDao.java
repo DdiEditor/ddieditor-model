@@ -1,11 +1,14 @@
 package org.ddialliance.ddieditor.ui.dbxml.category;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.CategoryDocument;
 import org.ddialliance.ddieditor.logic.identification.IdentificationManager;
 import org.ddialliance.ddieditor.model.DdiManager;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
+import org.ddialliance.ddieditor.model.resource.DDIResourceType;
+import org.ddialliance.ddieditor.persistenceaccess.PersistenceManager;
 import org.ddialliance.ddieditor.ui.dbxml.IDao;
 import org.ddialliance.ddieditor.ui.model.ElementType;
 import org.ddialliance.ddieditor.ui.model.IModel;
@@ -67,6 +70,24 @@ public class CategoryDao implements IDao {
 			throws Exception {
 		List<LightXmlObjectType> lightXmlObjectTypeList = DdiManager.getInstance().getCategorysLight(id, version,
 				parentId, parentVersion).getLightXmlObjectList().getLightXmlObjectList();
+		return lightXmlObjectTypeList;
+	}
+	
+	public List<LightXmlObjectType> getAllLightXmlObject(String id,
+			String version) throws Exception {
+		List<DDIResourceType> resources = PersistenceManager.getInstance()
+				.getResources();
+		String workingresource = PersistenceManager.getInstance()
+				.getWorkingResource();
+
+		List<LightXmlObjectType> lightXmlObjectTypeList = new ArrayList<LightXmlObjectType>();
+		for (DDIResourceType resource : resources) {
+			PersistenceManager.getInstance().setWorkingResource(
+					resource.getOrgName());
+			lightXmlObjectTypeList.addAll(getLightXmlObject(id, version, "", ""));
+		}
+
+		PersistenceManager.getInstance().setWorkingResource(workingresource);
 		return lightXmlObjectTypeList;
 	}
 

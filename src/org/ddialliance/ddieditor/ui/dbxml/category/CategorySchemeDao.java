@@ -1,5 +1,6 @@
 package org.ddialliance.ddieditor.ui.dbxml.category;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.ddialliance.ddi3.xml.xmlbeans.logicalproduct.CategorySchemeDocument;
@@ -22,6 +23,26 @@ import org.ddialliance.ddiftp.util.log.LogType;
 public class CategorySchemeDao implements IDao {
 	private static Log log = LogFactory.getLog(LogType.SYSTEM,
 			CategorySchemeDao.class);
+	
+	public static List<LightXmlObjectType> getAllCategorySchemesLight(String id,
+			String version) throws Exception {
+		List<DDIResourceType> resources = PersistenceManager.getInstance()
+				.getResources();
+		String workingresource = PersistenceManager.getInstance()
+				.getWorkingResource();
+
+		List<LightXmlObjectType> lightXmlObjectTypeList = new ArrayList<LightXmlObjectType>();
+		for (DDIResourceType resource : resources) {
+			PersistenceManager.getInstance().setWorkingResource(
+					resource.getOrgName());
+			lightXmlObjectTypeList.addAll(DdiManager.getInstance()
+					.getCategorySchemesLight(id, version, null, null)
+					.getLightXmlObjectList().getLightXmlObjectList());
+		}
+
+		PersistenceManager.getInstance().setWorkingResource(workingresource);
+		return lightXmlObjectTypeList;
+	}
 
 	@Override
 	public IModel create(String id, String version, String parentId,
