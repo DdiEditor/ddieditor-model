@@ -9,7 +9,7 @@ import org.ddialliance.ddiftp.util.DDIFtpException;
 import org.ddialliance.ddiftp.util.Translator;
 
 public class ConditionalUtil {
-	public static final String conditionalPattern = "^([vV][1-9]+[0-9]*(>{1}|>=|<{1}|!=|<=|={2})[0-9]*([&{2}]*|[|{2}])*)+";
+	public static final String conditionalPattern = "^([vV][1-9]+[0-9]*((>{1}|>=|<{1}|!=|<=|={2})[0-9]*)*([&{2}]*|[|{2}])*)+";
 
 	/**
 	 * Extract unique variable names from conditions
