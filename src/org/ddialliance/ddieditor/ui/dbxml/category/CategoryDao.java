@@ -74,7 +74,7 @@ public class CategoryDao implements IDao {
 	}
 	
 	public List<LightXmlObjectType> getAllLightXmlObject(String id,
-			String version) throws Exception {
+			String version, String parentId, String parentVersion) throws Exception {
 		List<DDIResourceType> resources = PersistenceManager.getInstance()
 				.getResources();
 		String workingresource = PersistenceManager.getInstance()
@@ -84,7 +84,7 @@ public class CategoryDao implements IDao {
 		for (DDIResourceType resource : resources) {
 			PersistenceManager.getInstance().setWorkingResource(
 					resource.getOrgName());
-			lightXmlObjectTypeList.addAll(getLightXmlObject(id, version, "", ""));
+			lightXmlObjectTypeList.addAll(getLightXmlObject(id, version, parentId, parentVersion));
 		}
 
 		PersistenceManager.getInstance().setWorkingResource(workingresource);

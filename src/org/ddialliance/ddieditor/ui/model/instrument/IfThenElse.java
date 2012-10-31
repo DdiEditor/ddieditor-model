@@ -6,6 +6,7 @@ import org.ddialliance.ddi3.xml.xmlbeans.datacollection.IfThenElseDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.CodeType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.ProgrammingLanguageCodeType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.ReferenceType;
+import org.ddialliance.ddieditor.logic.identification.IdentificationManager;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
 import org.ddialliance.ddieditor.ui.model.Model;
 import org.ddialliance.ddieditor.ui.model.ModelAccessor;
@@ -54,8 +55,8 @@ public class IfThenElse extends Model {
 
 		// then reference
 		if (type.equals(ModelIdentifingType.Type_C.class)) {
-			ModelAccessor.setReference(getThenReference(),
-					(LightXmlObjectType) value);
+			IdentificationManager.getInstance().addReferenceInformation(
+					getThenReference(), (LightXmlObjectType) value);
 		}
 
 		// else reference
@@ -63,8 +64,8 @@ public class IfThenElse extends Model {
 			if (((LightXmlObjectType) value).getId().equals("")) {
 				doc.getIfThenElse().unsetElseConstructReference();
 			} else {
-				ModelAccessor.setReference(getElseReference(),
-						(LightXmlObjectType) value);
+				IdentificationManager.getInstance().addReferenceInformation(
+						getElseReference(), (LightXmlObjectType) value);
 			}
 		}
 	}
@@ -75,9 +76,10 @@ public class IfThenElse extends Model {
 		if (doc.getIfThenElse().getThenConstructReference().getIDList()
 				.isEmpty()) {
 			throw new Exception(
-					Translator.trans("IfThenElse.mess.MandatoryThenReferenceHasNotBeenSpecified")); //$NON-NLS-1$
+					Translator
+							.trans("IfThenElse.mess.MandatoryThenReferenceHasNotBeenSpecified")); //$NON-NLS-1$
 		}
-		
+
 		// check condition
 		if (doc.getIfThenElse().getIfCondition() != null) {
 			String ddaProgLang = DdiEditorConfig
@@ -110,7 +112,7 @@ public class IfThenElse extends Model {
 			return codeType.getSourceQuestionReferenceList().get(0);
 		}
 	}
-	
+
 	public ReferenceType addNewIfQuestionReference() {
 		CodeType codeType = getCodeType(doc.getIfThenElse().getIfCondition());
 		if (codeType == null) {

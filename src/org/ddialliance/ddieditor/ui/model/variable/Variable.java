@@ -432,6 +432,17 @@ public class Variable extends Model {
 			((RepresentationType) getValueRepresentation())
 					.setMissingValue((List) value);
 		}
+		
+		// add universe ref
+		if (type.equals(ModelIdentifingType.Type_M.class)) {
+			if (((LightXmlObjectType) value).getId().equals("")) {
+				doc.getVariable().getUniverseReferenceList().remove(0);
+			} else {
+				ReferenceType ref = doc.getVariable().addNewUniverseReference();
+				ref.addNewID();
+				ModelAccessor.setReference(ref, (LightXmlObjectType) value);
+			}
+		}
 	}
 
 	private boolean bigIntIsZero(BigInteger bigInt) {

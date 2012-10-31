@@ -3,7 +3,6 @@ package org.ddialliance.ddieditor.ui.dbxml;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ddialliance.ddi3.xml.xmlbeans.reusable.ReferenceType;
 import org.ddialliance.ddieditor.model.DdiManager;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectListDocument;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
@@ -187,19 +186,5 @@ public class DaoHelper {
 
 		PersistenceManager.getInstance().setWorkingResource(workingresource);
 		return lightXmlObjectTypeList;
-	}
-
-	// 20120523 -work in progress on initMultipleStorage and
-	// resetMultipleStorage
-	// delete if nessesary not used :)	
-	String workingResource;
-
-	public List<DDIResourceType> initMultipleStorage() throws DDIFtpException {
-		workingResource = PersistenceManager.getInstance().getWorkingResource();
-		return PersistenceManager.getInstance().getResources();
-	}
-
-	public void resetMultipleStorage() throws DDIFtpException {
-		PersistenceManager.getInstance().setWorkingResource(workingResource);
 	}
 }
