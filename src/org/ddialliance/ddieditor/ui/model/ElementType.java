@@ -97,12 +97,24 @@ public enum ElementType {
 	DATA_COLLECTION("datacollection__DataCollection", null, null, "daco",
 			"DataCollection.label", "", null),
 	// methodology
-	METHODOLOGY("methodology", null, null, "method", "", "", null),
+	METHODOLOGY("Methodology", null, null, "metd", "", "", null),
 
 	// data collection methodology
-	DATA_COLLECTION_METHODOLOGY("datacollectionmethodology", null, null,
-			"dcmethod", "", "", null),
+	DATA_COLLECTION_METHODOLOGY("DataCollectionMethodology", null, null,
+			"dcmd", "", "", null),
 
+	// time method
+	TIME_METHOD("TimeMethod", null, null, "timd", "", "", null),
+	
+	// sampling procedure
+	SAMPLING_PROCEDURE("SamplingProcedure", null, null, "samp", "", "", null),
+
+	// collection event
+	COLLECTION_EVENT("CollectionEvent", null, null, "coev", "", "", null),
+	
+	// 
+	COLLECTION_SITUATION("CollectionSituation", null, null, "cosi", "", "", null),
+	
 	// question
 	QUESTION_ITEM("QuestionItem", getID("QuestionsPerspective.ID"),
 			getID("QuestionItemEditor.ID"), "quei",
@@ -168,8 +180,9 @@ public enum ElementType {
 			"InterviewerInstruction", null, null, "intv",
 			"InterviewerInstruction.label", "", null), INTERVIEWER_INSTRUCTION_SCHEME(
 			"InterviewerInstructionScheme", getID("InstrumentPerspective.ID"),
-			getID("InstrumentPerspective.ID"), "invs", "InterviewerInstructionScheme", "",
-			Arrays.asList(ElementType.INSTRUCTION)),
+			getID("InstrumentPerspective.ID"), "invs",
+			"InterviewerInstructionScheme", "", Arrays
+					.asList(ElementType.INSTRUCTION)),
 
 	// logical product
 	LOGICAL_PRODUCT("logicalproduct__LogicalProduct", null, null, "lopr",
