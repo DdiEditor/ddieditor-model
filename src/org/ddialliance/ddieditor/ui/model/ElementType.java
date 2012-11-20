@@ -97,10 +97,10 @@ public enum ElementType {
 	DATA_COLLECTION("datacollection__DataCollection", null, null, "daco",
 			"DataCollection.label", "", null),
 	// methodology
-	METHODOLOGY("methodology", null, null, "metd", "", "", null),
+	METHODOLOGY("Methodology", null, null, "metd", "", "", null),
 
 	// data collection methodology
-	DATA_COLLECTION_METHODOLOGY("datacollectionmethodology", null, null,
+	DATA_COLLECTION_METHODOLOGY("DataCollectionMethodology", null, null,
 			"dcmd", "", "", null),
 
 	// time method
