@@ -112,7 +112,10 @@ public enum ElementType {
 	// collection event
 	COLLECTION_EVENT("CollectionEvent", null, null, "coev", "", "", null),
 	
-	// 
+	// collection situation
+	COLLECTION_MODE("CollectionMode", null, null, "como", "", "", null),
+	
+	// collection situation
 	COLLECTION_SITUATION("CollectionSituation", null, null, "cosi", "", "", null),
 	
 	// question
