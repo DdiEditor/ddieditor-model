@@ -6,5 +6,5 @@ package org.ddialliance.ddieditor.ui.model.note;
  * @see http://www.ddialliance.org/Specification/DDI-Lifecycle/3.1/XMLSchema/FieldLevelDocumentation/reusable_xsd/complexTypes/NoteType.html#r3
  */
 public enum NoteType {
-	PROCESSING, FOOTNOTE, ADDENDUM, SYSTEM, PROBLEM, COMMENT, OTHER;
+	ZERO_COUNT, PROCESSING, FOOTNOTE, ADDENDUM, SYSTEM, PROBLEM, COMMENT, OTHER;
 }

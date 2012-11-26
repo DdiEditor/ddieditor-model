@@ -21,10 +21,20 @@ public enum NoteStructure {
 			"Description of a samling procedure", NoteType.ADDENDUM,
 			ElementType.DATA_COLLECTION),
 
+	DATA_COLLECTION_TIME_METHOD(
+			"dk.dda.ddi.datacollectiontimemethoddescription", "0.1",
+			"Description of a time method", NoteType.ADDENDUM,
+			ElementType.DATA_COLLECTION),
+
 	DATA_COLLECTION_EVENT_COLLECTION_MODE(
 			"dk.dda.ddi.datacollectionevntcollectionmodedescription", "0.1",
 			"Description of a collection mode", NoteType.ADDENDUM,
-			ElementType.COLLECTION_MODE);
+			ElementType.DATA_COLLECTION),
+
+	DATA_COLLECTION_EVENT_COLLECTION_SITUATION(
+			"dk.dda.ddi.datacollectionevntcollectionsituationdescription",
+			"0.1", "Description of a collection sitution", NoteType.ADDENDUM,
+			ElementType.DATA_COLLECTION);
 
 	private String noteId;
 	private String version;

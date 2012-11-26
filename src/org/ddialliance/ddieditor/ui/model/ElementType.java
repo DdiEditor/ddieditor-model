@@ -105,19 +105,24 @@ public enum ElementType {
 
 	// time method
 	TIME_METHOD("TimeMethod", null, null, "timd", "", "", null),
-	
+
 	// sampling procedure
 	SAMPLING_PROCEDURE("SamplingProcedure", null, null, "samp", "", "", null),
 
 	// collection event
 	COLLECTION_EVENT("CollectionEvent", null, null, "coev", "", "", null),
-	
+
 	// collection situation
 	COLLECTION_MODE("CollectionMode", null, null, "como", "", "", null),
-	
+
 	// collection situation
-	COLLECTION_SITUATION("CollectionSituation", null, null, "cosi", "", "", null),
-	
+	COLLECTION_SITUATION("CollectionSituation", null, null, "cosi", "", "",
+			null),
+
+	// action to minimize losses
+	ACTION_TO_MINIMIZE_LOSSES("ActionToMinimizeLosses", null, null, "cosi", "",
+			"", null),
+
 	// question
 	QUESTION_ITEM("QuestionItem", getID("QuestionsPerspective.ID"),
 			getID("QuestionItemEditor.ID"), "quei",
