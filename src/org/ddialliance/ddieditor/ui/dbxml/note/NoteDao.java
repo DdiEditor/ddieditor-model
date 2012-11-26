@@ -97,7 +97,7 @@ public class NoteDao implements IDao {
 							"ProcessingEvent" },
 					// jump elements
 					new String[] { "Note" });
-		}
+		} 
 
 		// guard
 		else {
