@@ -3,17 +3,14 @@ package org.ddialliance.ddieditor.ui.model.note;
 import java.util.List;
 
 import org.apache.xmlbeans.XmlObject;
-import org.ddialliance.ddi3.xml.xmlbeans.reusable.ContentDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.NoteDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.StructuredStringType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.UserIDType;
-import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.StructuredStringTypeImpl;
 import org.ddialliance.ddieditor.logic.identification.IdentificationManager;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
 import org.ddialliance.ddieditor.ui.model.ElementType;
 import org.ddialliance.ddieditor.ui.model.Model;
 import org.ddialliance.ddiftp.util.DDIFtpException;
-import org.ddialliance.ddiftp.util.xml.XmlBeansUtil;
 
 public class Note extends Model {
 	NoteDocument doc;

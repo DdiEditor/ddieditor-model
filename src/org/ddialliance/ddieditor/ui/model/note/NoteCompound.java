@@ -3,7 +3,6 @@ package org.ddialliance.ddieditor.ui.model.note;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ddialliance.ddi3.xml.xmlbeans.reusable.ContentDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.StructuredStringType;
 import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
 import org.ddialliance.ddiftp.util.DDIFtpException;
