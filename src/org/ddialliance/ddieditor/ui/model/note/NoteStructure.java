@@ -7,6 +7,9 @@ public enum NoteStructure {
 			"StudyUnit/Creator first name to Individual reference",
 			NoteType.SYSTEM, ElementType.STUDY_UNIT),
 
+	KIND_OF_DATA("dk.dda.ddi.kindofdata", "0.1", "Kind of Data",
+			NoteType.ADDENDUM, ElementType.STUDY_UNIT),
+
 	UNIVERSE_DESCRIPTION("dk.dda.ddi.universedescription", "0.1",
 			"Description of a universe", NoteType.ADDENDUM,
 			ElementType.CONCEPTUAL_COMPONENT),
