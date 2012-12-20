@@ -1,5 +1,5 @@
 package org.ddialliance.ddieditor.ui.model.studyunit;
 
 public enum StudyUnitState {
-	ARK, FOA, FOB, FOC, FOD, KON, MOD, NED, OPC, OPD, FOE, ARE;
+	KON, MOD, ARK, FOA, FOB, FOC, FOD, NED, OPC, OPD, ARE, FKE, FOE;
 }
