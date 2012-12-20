@@ -238,7 +238,11 @@ public enum ElementType {
 	SOFTWARE("Software", null, null, "sofw", "Software.label", "", null),
 
 	// archive
-	INDIVIDUAL("Individual", null, null, "indi", "Individual.label", "", null);
+	INDIVIDUAL("Individual", null, null, "indi", "Individual.label", "", null),
+	
+	ORGANIZATION("Organization", null, null, "orga", "", "", null),
+	
+	LIFE_CYCLE_EVENT("LifecycleEvent", null, null, "lice", "", "", null);
 
 	private static Log log = LogFactory.getLog(LogType.EXCEPTION,
 			ElementType.class);
