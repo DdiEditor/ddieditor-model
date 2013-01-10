@@ -23,7 +23,9 @@ public enum UserIdType {
 
 	ARCHIVE_ACCESS_CONDITION("dk.dda.study.archive.access.condition.cvcode"),
 
-	ARCHIVE_ACCESS_RESTRICTION("dk.dda.study.archive.access.restriction.cvcode");
+	ARCHIVE_ACCESS_RESTRICTION("dk.dda.study.archive.access.restriction.cvcode"),
+	
+	ANALYSIS_UNIT_COVERED("dk.dda.study.analysisunitcovered");
 
 	String type;
 
