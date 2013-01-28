@@ -127,7 +127,7 @@ public class QuestionItemDao implements IDao {
 
 		QuestionItemDocument doc = QuestionItemDocument.Factory.newInstance();
 		QuestionItemType type = doc.addNewQuestionItem();
-		
+
 		IdentificationManager.getInstance().addIdentification(
 				doc.getQuestionItem(),
 				ElementType.getElementType(type.getDomNode().getLocalName())
@@ -220,8 +220,11 @@ public class QuestionItemDao implements IDao {
 						questionItem.getParentVersion(),
 						"QuestionScheme",
 						// parent sub-elements
-						new String[] { "VersionResponsibility",
-								"VersionRationale", "Label", "Description" },
+						new String[] { "UserID", "VersionResponsibility",
+								"VersionRationale", "QuestionSchemeName",
+								"Label", "Description",
+								"QuestionSchemeReference",
+								"MultipleQuestionItem" },
 						// stop elements
 						new String[] {},
 						// jump elements
