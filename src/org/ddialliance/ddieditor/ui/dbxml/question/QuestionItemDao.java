@@ -220,15 +220,13 @@ public class QuestionItemDao implements IDao {
 						questionItem.getParentVersion(),
 						"QuestionScheme",
 						// parent sub-elements
-						new String[] { "UserID", "VersionResponsibility",
-								"VersionRationale", "QuestionSchemeName",
-								"Label", "Description",
-								"QuestionSchemeReference",
-								"MultipleQuestionItem" },
+						new String[] { "UserID", "VersionResponsibility", "VersionRationale", 
+							"QuestionSchemeName", "Label", "Description", "QuestionSchemeReference", 
+							"MultipleQuestionItem" },
 						// stop elements
 						new String[] {},
 						// jump elements
-						new String[] { "QuestionItem" });
+						new String[] { "MultipleQuestionItem" });
 			}
 		} catch (DDIFtpException e) {
 			log.error("Create DBXML Question Item error: " + e.getMessage());
