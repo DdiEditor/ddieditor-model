@@ -314,18 +314,21 @@ public class MultipleQuestionItemDao implements IDao {
 						maintainableLabelQueryResult
 								.getSubElement("SubQuestionSequence")[0])
 						.length();
-		lengthNew = doc.getMultipleQuestionItem().getSubQuestionSequence()
-				.getItemSequenceType() == null ? 0 : doc
-				.getMultipleQuestionItem().getSubQuestionSequence()
-				.getItemSequenceType().toString().length();
-		CrudValue = genCrudValue(lengthOld, lengthNew, 1);
-		if (CrudValue != null) {
-			SubQuestionSequenceUpdateElement.setCrudValue((Integer) CrudValue);
-			SubQuestionSequenceUpdateElement.setValue(doc
+		if (doc.getMultipleQuestionItem().getSubQuestionSequence() != null) {
+			lengthNew = doc.getMultipleQuestionItem().getSubQuestionSequence()
+					.getItemSequenceType() == null ? 0 : doc
 					.getMultipleQuestionItem().getSubQuestionSequence()
-					.xmlText(DdiManager.getInstance().getXmlOptions()));
-			maintainableLabelUpdateElementList
-					.add(SubQuestionSequenceUpdateElement);
+					.getItemSequenceType().toString().length();
+			CrudValue = genCrudValue(lengthOld, lengthNew, 1);
+			if (CrudValue != null) {
+				SubQuestionSequenceUpdateElement
+						.setCrudValue((Integer) CrudValue);
+				SubQuestionSequenceUpdateElement.setValue(doc
+						.getMultipleQuestionItem().getSubQuestionSequence()
+						.xmlText(DdiManager.getInstance().getXmlOptions()));
+				maintainableLabelUpdateElementList
+						.add(SubQuestionSequenceUpdateElement);
+			}
 		}
 
 		// add Question Text
