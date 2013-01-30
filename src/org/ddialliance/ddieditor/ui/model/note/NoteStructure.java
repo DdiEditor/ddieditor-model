@@ -37,7 +37,11 @@ public enum NoteStructure {
 	DATA_COLLECTION_EVENT_COLLECTION_SITUATION(
 			"dk.dda.ddi.datacollectionevntcollectionsituationdescription",
 			"0.1", "Description of a collection sitution", NoteType.ADDENDUM,
-			ElementType.DATA_COLLECTION);
+			ElementType.DATA_COLLECTION),
+
+	VARIABLE_EXTENDED_DESCRIPTION("dk.dda.osi2ddiconversion.varnote-0.1",
+			"0.1", "Extended description across several variables",
+			NoteType.ADDENDUM, ElementType.STUDY_UNIT);
 
 	private String noteId;
 	private String version;
