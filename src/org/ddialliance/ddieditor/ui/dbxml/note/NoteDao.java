@@ -27,6 +27,27 @@ public class NoteDao implements IDao {
 
 		// parent study unit
 		if (parent.equals(ElementType.STUDY_UNIT)) {
+			// hack if notes all ready exist in study unit
+			try {
+				List<LightXmlObjectType> result = DdiManager
+						.getInstance()
+						.getNotesLight(null, model.getId(), model.getVersion(),
+								parent.getElementName())
+						.getLightXmlObjectList().getLightXmlObjectList();
+				if (!result.isEmpty()) {
+					// insert notes after existing notes
+					DdiManager.getInstance().createElementAfter(
+							model.getDocument().xmlText(
+									DdiManager.getInstance().getXmlOptions()),
+							model.getId(), model.getVersion(),
+							parent.getElementName(), result.size(),
+							ElementType.NOTE.getElementName());
+					return;
+				}
+			} catch (Exception e) {
+				throw new DDIFtpException(e);
+			}
+
 			DdiManager.getInstance().createElement(
 					model.getDocument(),
 					model.getId(),
@@ -97,7 +118,7 @@ public class NoteDao implements IDao {
 							"ProcessingEvent" },
 					// jump elements
 					new String[] { "Note" });
-		} 
+		}
 
 		// guard
 		else {
