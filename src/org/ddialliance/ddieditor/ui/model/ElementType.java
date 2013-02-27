@@ -235,7 +235,9 @@ public enum ElementType {
 			"DataFileIdentification.label", "", null),
 
 	// reusable
-	SOFTWARE("Software", null, null, "sofw", "Software.label", "", null),
+	SOFTWARE("Software", null, null, "sofw", "Software.label", "", null), OTHER_MATERIAL(
+			"OtherMaterial", null, null, "othm", "OtherMaterial.label", "",
+			null),
 
 	// archive
 	ARCHIVE("Archive", null, null, "arch", "", "", null),
