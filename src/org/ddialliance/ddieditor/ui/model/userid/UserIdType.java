@@ -24,12 +24,14 @@ public enum UserIdType {
 	ARCHIVE_ACCESS_CONDITION("dk.dda.study.archive.access.condition.cvcode"),
 
 	ARCHIVE_ACCESS_RESTRICTION("dk.dda.study.archive.access.restriction.cvcode"),
-	
+
 	ANALYSIS_UNIT_COVERED("dk.dda.study.analysisunitcovered"),
-	
-	PRIMARY_PUBLICATION("dk.dda.study.primarypublication"), 
-	
-	SECONDARY_PUBLICATION("dk.dda.study.secondarypublication");
+
+	PRIMARY_PUBLICATION("dk.dda.study.primarypublication"),
+
+	SECONDARY_PUBLICATION("dk.dda.study.secondarypublication"),
+
+	ORG_SAMLE_SIZE("dk.dda.originalsamplesize");
 
 	String type;
 
