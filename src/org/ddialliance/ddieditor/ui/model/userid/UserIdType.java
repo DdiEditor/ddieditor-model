@@ -31,7 +31,11 @@ public enum UserIdType {
 
 	SECONDARY_PUBLICATION("dk.dda.study.secondarypublication"),
 
-	ORG_SAMLE_SIZE("dk.dda.originalsamplesize");
+	ORG_SAMLE_SIZE("dk.dda.originalsamplesize"),
+	
+	ORGANIZATION_DDA_ID("dk.dda.organization.dbid"),
+	
+	INDIVIDUAL_DDA_ID("dk.dda.individual.dbid");
 
 	String type;
 
