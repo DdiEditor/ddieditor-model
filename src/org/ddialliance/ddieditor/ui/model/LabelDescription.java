@@ -6,6 +6,8 @@ import org.apache.xmlbeans.XmlObject;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.LabelDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.LabelType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.StructuredStringType;
+import org.ddialliance.ddieditor.model.DdiManager;
+import org.ddialliance.ddieditor.model.lightxmlobject.LightXmlObjectType;
 import org.ddialliance.ddiftp.util.DDIFtpException;
 import org.ddialliance.ddiftp.util.log.Log;
 import org.ddialliance.ddiftp.util.log.LogFactory;
@@ -43,8 +45,15 @@ public abstract class LabelDescription extends Model implements IModel,
 	public LabelDescription(String id, String version, String parentId,
 			String parentVersion, List<LabelType> labels,
 			List<StructuredStringType> descrs) {
-		super(id, version, parentId, parentVersion, "TODO");
-
+		super(id, version, parentId, parentVersion, "FIXED");
+		
+		try {
+			LightXmlObjectType l = DdiManager.getInstance().getAgency(parentId, parentVersion);
+			setAgency(l.getAgency());
+		} catch (Exception e) {
+			// do nothing
+		}
+		
 		this.labels = labels;
 		this.descrs = descrs;
 	}
