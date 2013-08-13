@@ -37,7 +37,9 @@ public enum UserIdType {
 	
 	INDIVIDUAL_DDA_ID("dk.dda.individual.dbid"),
 	
-	MULTI_QUEI_GROUPING_ID("dk.dda.multiplequestion.groupingid");
+	MULTI_QUEI_GROUPING_ID("dk.dda.multiplequestion.groupingid"), 
+	
+	DDI_EDITOR_VERSION("dk.dda.ddieditor.version");
 
 	String type;
 
