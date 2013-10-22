@@ -5,11 +5,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.ddialliance.ddieditor.ui.model.DdiModelException;
+import org.ddialliance.ddieditor.ui.model.ElementType;
 import org.ddialliance.ddiftp.util.DDIFtpException;
 import org.ddialliance.ddiftp.util.Translator;
 
 public class ConditionalUtil {
-	public static final String conditionalPattern = "^([vV][1-9]+[0-9]*((>{1}|>=|<{1}|!=|<=|={2})[0-9]*)*([&{2}]*|[|{2}])*)+";
+	public static final String conditionalPattern = "^([vV][1-9]+[0-9]*((>{1}|>={1}|<{1}|!={1}|<={1}|={2})[0-9]*)*)+";
 
 	/**
 	 * Extract unique variable names from conditions
@@ -32,6 +33,18 @@ public class ConditionalUtil {
 		return varIDs.keySet().toArray(new String[varIDs.size()]);
 	}
 
+	public static boolean validCondition(String expression) {
+		Pattern pattern = Pattern.compile(ConditionalUtil.conditionalPattern);
+		String conds[] = expression.split("&&|\\|\\|");
+		for (int i = 0; i < conds.length; i++) {
+			Matcher matcher = pattern.matcher(conds[i]);
+			if (!matcher.matches()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * Validate a DDA instrument conditions
 	 * 
@@ -41,14 +54,11 @@ public class ConditionalUtil {
 	 */
 	public static void validateCondition(String expression)
 			throws DdiModelException {
-		Pattern pattern = Pattern.compile(ConditionalUtil.conditionalPattern);
-
-		Matcher matcher = pattern.matcher(expression);
-		if (!matcher.matches()) {
-			throw new DdiModelException(Translator.trans(
-					"instrument.condition.notcorrect",
-					new Object[] { expression }),
-					DdiModelException.Sevrity.FATAL);
-		}
+			if (!validCondition(expression)) {
+				throw new DdiModelException(Translator.trans(
+						"instrument.condition.notcorrect",
+						new Object[] { expression }),
+						DdiModelException.Sevrity.FATAL);
+			}
 	}
 }
