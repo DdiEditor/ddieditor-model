@@ -2,6 +2,10 @@ package org.ddialliance.ddieditor.ui.model.userid;
 
 public enum UserIdType {
 	ARCHIVE_BRANCH("dk.dda.archivebranch"),
+	
+	ANNONYMIZIED_DATA("dk.dda.study.annonymizeddata"),
+	
+	CPR_DATA("dk.dda.study.cprdata"),
 
 	UNSPECIFIED_START_DATE("dk.dda.study.startdate.unspecified"),
 
