@@ -18,10 +18,12 @@ import org.ddialliance.ddi3.xml.xmlbeans.reusable.InternationalStringType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.ReferenceType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.StructuredStringType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.UniverseReferenceDocument;
+import org.ddialliance.ddi3.xml.xmlbeans.reusable.UserIDType;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.CitationDocumentImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.CoverageDocumentImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.NameDocumentImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.UniverseReferenceDocumentImpl;
+import org.ddialliance.ddi3.xml.xmlbeans.reusable.impl.UserIDDocumentImpl;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.AbstractDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.KindOfDataDocument;
 import org.ddialliance.ddi3.xml.xmlbeans.studyunit.KindOfDataType;
@@ -54,6 +56,7 @@ public class StudyUnit extends Model {
 	};
 
 	private MaintainableLabelQueryResult maintainableLabelQueryResult = null;
+	private SubElement userIdSubElements;
 	private SubElement citationSubElements;
 	private SubElement abstractSubElements;
 	private SubElement universeRefSubElements;
@@ -80,6 +83,7 @@ public class StudyUnit extends Model {
 		super(id, version, parentId, parentVersion, agency);
 		this.maintainableLabelQueryResult = studyUnitQueryResult;
 		if (studyUnitQueryResult != null) {
+			userIdSubElements = new SubElement(studyUnitQueryResult.getSubElement("UserID"));
 			citationSubElements = new SubElement(
 					studyUnitQueryResult.getSubElement("Citation"));
 			abstractSubElements = new SubElement(
@@ -101,6 +105,7 @@ public class StudyUnit extends Model {
 	 * Clear changed status for sub elements
 	 */
 	public void clearChanged() {
+		userIdSubElements.changed(false);
 		citationSubElements.changed(false);
 		abstractSubElements.changed(false);
 		universeRefSubElements.changed(false);
@@ -127,6 +132,13 @@ public class StudyUnit extends Model {
 				&& (!maintainableLabelQueryResult.getVersion().equals(""))) {
 			type.setVersion(maintainableLabelQueryResult.getVersion());
 		}
+
+		// user ids
+		UserIDType[] userIds = new UserIDType[userIdSubElements.getXmlObjects().length];
+		for (int i = 0; i < userIdSubElements.getXmlObjects().length; i++) {
+			userIds[i] = ((UserIDDocumentImpl) userIdSubElements.getXmlObjects()[i]).getUserID();
+		}
+		type.setUserIDArray(userIds);
 
 		// add study description
 		// citation
