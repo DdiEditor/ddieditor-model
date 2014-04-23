@@ -18,8 +18,8 @@ public class StudyUnitState {
 	}
 
 	public StudyUnitState(Object[] obejcts) {
-		this.format = (String)obejcts[0];
-		this.ddanr = (String)obejcts[1];
+		this.format = (String)obejcts[1];
+		this.ddanr = (String)obejcts[0];
 		this.date = (Timestamp)obejcts[2];
 	}
 
