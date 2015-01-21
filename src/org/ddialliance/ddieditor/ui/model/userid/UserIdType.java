@@ -43,7 +43,7 @@ public enum UserIdType {
 	
 	MULTI_QUEI_GROUPING_ID("dk.dda.multiplequestion.groupingid"), 
 	
-	DDI_EDITOR_VERSION("dk.dda.ddieditor.version");
+	DDI_EDITOR_VERSION("ddieditor.app.version");
 
 	String type;
 
