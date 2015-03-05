@@ -159,6 +159,11 @@ public class DaoHelper {
 			lightXmlObjectTypeList.addAll(DdiManager.getInstance()
 					.getControlConstructsLight());
 			break;
+            case QUESTION_SCHEME:
+			lightXmlObjectTypeList.addAll(DdiManager.getInstance()
+					.getQuestionSchemesLight(id, version, null, null)
+					.getLightXmlObjectList().getLightXmlObjectList());
+			break;
             case QUESTION_ITEM:
 			lightXmlObjectTypeList.addAll(DdiManager.getInstance()
 					.getQuestionItemsLight(id, version, null, null)
