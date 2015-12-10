@@ -39,6 +39,12 @@ public class ConditionalUtil {
 		for (int i = 0; i < conds.length; i++) {
 			Matcher matcher = pattern.matcher(conds[i]);
 			if (!matcher.matches()) {
+				// dak list of variables are now accepted as condition
+				Pattern varList = Pattern.compile("^([vV][1-9]+[0-9][,]?)+");
+				Matcher matvars = pattern.matcher(conds[i]);
+				if (matvars.find()) {
+					return true;
+				}
 				return false;
 			}
 		}
